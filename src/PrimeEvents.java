@@ -11,7 +11,6 @@ public class PrimeEvents {
 
      public static void main(String[] args) {
          welcome();
-
      }
     private static void welcome() {
         Scanner scanner = new Scanner(System.in);
@@ -27,13 +26,19 @@ public class PrimeEvents {
 
     private static void login() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("please enter your user name");
-        String user_name = scanner.nextLine();
+        System.out.println("please enter your name");
+        String name = scanner.nextLine();
         System.out.println("please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
+        System.out.println("(1)I am a customer");
+        System.out.println("(2)I am a halls owner");
+        int choice = scanner.nextInt();
+        if (choice == 1) { customerHome();}
+        if (choice == 2) { ownerHome();}
 
     }
+
     private static void register() {
         Scanner scanner = new Scanner(System.in);
 
@@ -79,5 +84,28 @@ public class PrimeEvents {
             register();
         }
     }
+
+    private static void ownerHome() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("(1)View halls");
+        System.out.println("(2)View bookings");
+        System.out.println("(3)View my profile");
+        System.out.println("(4)Write a review");
+        System.out.println("(5)Manage bookings");
+        int choice = scanner.nextInt();
+
+    }
+
+    private static void customerHome() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("(1)Manage halls");
+        System.out.println("(2)Create halls");
+        System.out.println("(3)Manage discount");
+        System.out.println("(4)Update payment status");
+        System.out.println("(5)Manage bookings");
+        int choice = scanner.nextInt();
+    }
+
+
 
 }
