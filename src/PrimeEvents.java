@@ -43,17 +43,7 @@ public class PrimeEvents {
         System.out.println("Please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
-        System.out.println("Login as a customer, enter 1");
-        System.out.println("Login as an Owner of halls , enter 2");
-        System.out.println("Login as an Admin, enter 3");
-        int choice = scanner.nextInt();
-        if (choice == 1) { customerHome();}
-        if (choice == 2) { ownerHome();}
-        if (choice == 3) { adminHome();}
-        else{
-            System.out.println("Your input is invalid , please try again");
-            login();
-        }
+        ownerHome();
     }
 
     private static void register() {
@@ -65,10 +55,8 @@ public class PrimeEvents {
 //            Confirm password
 //            Concession? (Senior citizen or veterans)
 
-        System.out.println("Please enter your first name");
-        String firstName = scanner.nextLine();
-        System.out.println("Please enter your last name");
-        String lastName = scanner.nextLine();
+        System.out.println("Please enter your full name");
+        String fullName = scanner.nextLine();
         System.out.println("Please enter your password");
         String passWord = scanner.nextLine();
         System.out.println("Please confirm your password");
@@ -93,10 +81,12 @@ public class PrimeEvents {
         if (type == 1){
             //owner
             System.out.println("Your account has been successfully created");
+            login();
         }
         if (type == 2){
             //customer
             System.out.println("Your account has been successfully created");
+            login();
         }
 
         else {
@@ -107,48 +97,103 @@ public class PrimeEvents {
 
     private static void customerHome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(" If you want to View halls, please enter 1");
-        System.out.println(" If you want to View bookings, please enter 2");
-        System.out.println(" If you want to View my profile, please enter 3");
-        System.out.println(" If you want to Write a review, please enter 4");
-        System.out.println(" If you want to Manage bookings, please enter 5");
+        System.out.println("Home");
+        System.out.println("(1) View halls");
+        System.out.println("(2) View bookings");
+        System.out.println("(3) View my profile");
+        System.out.println("(4) Write a review");
+        System.out.println("(5) Manage bookings");
+        System.out.println("(6) View quotation status");
         int choice = scanner.nextInt();
         switch (choice)
         {
             case 1 :
-                System.out.println("display all the halls information");break;
+                System.out.println("Please select a hall");
+                //[Halls]
+                System.out.println("(1) Name: 'Library'");
+                System.out.println();
+                int hall = scanner.nextInt();
+                if (hall == 1){
+                    hallDetail();
+                }
+                break;
             case 2 :
-                System.out.println("display all the booking information");break;
+                System.out.println("Please select a booking");
+                //[Bookings]
+                System.out.println("(1) Name: 'Library'");
+                System.out.println();
+                int booking = scanner.nextInt();
+                if (booking == 1){
+                    bookingDetail();
+                };break;
 
             case 3 :
-                System.out.println("Your name is : getMethod, your DOB is : , etc");break;
-
+                profile();break;
             case 4 :
-                System.out.println("Please choose the booked hall you'd like to write a review");break;
+                System.out.println("Please select a booking");
+                //[Bookings]
+                System.out.println("(1) Name: 'Library'");
+                System.out.println();
+                int booking2 = scanner.nextInt();
+                switch (booking2){
+                    case 1 :
+                        System.out.println("Please write your review about the booking");
+                        String bookReview = scanner.next();
+                        System.out.println("Your review has been post!");
+                        customerHome();
+                };
+
+                break;
+
 
             case 5 :
-                System.out.println("If you want to change the date ,press 1");
-                System.out.println("If you want to cancel the booking , press 2");
-                int c = scanner.nextInt();
+                System.out.println("Please select a booking to cancel");
+                //[Bookings]
+                System.out.println("(1) Name: 'Library'");
+                System.out.println("If you want to change the date, please contact the admin.");
+                System.out.println();
+                int booking3 = scanner.nextInt();
+                switch (booking3) {
+                    case 1:
+                        cancel();
+                }
                 break;
-            default :
-                System.out.println("Unknown number");
+            case 6 :
+                //[Bookings]
+                System.out.println("Name: 'Library', Status: pending");
+                System.out.println();
+                System.out.println("(1) Home");
+                int h = scanner.nextInt();
+                switch (h) {
+                    case 1:
+                        customerHome();
+                }
+                customerHome();
         }
     }
 
     private static void ownerHome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(" If you want to Manage halls, please enter 1");
-        System.out.println(" If you want to Create halls, please enter 2");
-        System.out.println(" If you want to Manage discount, please enter 3");
-        System.out.println(" If you want to Update payment status,please enter 4");
-        System.out.println(" If you want to Authorise bookings, please enter 5");
+        System.out.println("(1) Manage halls");
+        System.out.println("(2) Create halls");
+        System.out.println("(3) Manage discount");
+        System.out.println("(4) Update payment status");
+        System.out.println("(5) Manage bookings");
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
-                //set available
-                System.out.println("You has successfully change the status of your hall");
-                break;
+                System.out.println("Please select a hall");
+                //[Bookings]
+                System.out.println("(1) Name: 'Library'");
+                System.out.println("(2) Home");
+                System.out.println();
+                int hall = scanner.nextInt();
+                if (hall == 1){
+                    manageHall();
+                }
+                if(hall == 2){
+                    ownerHome();
+                };break;
             case 2:
 //              Halls name
 //              Owner details
@@ -156,31 +201,75 @@ public class PrimeEvents {
 //              availability
 //              quotes
                 System.out.println("Please enter the name of your hall");
-                String hallName = scanner.nextLine();
+                String hallName = scanner.next();
                 System.out.println("Please write the description of your hall");
-                String hallDes = scanner.nextLine();
-                System.out.println("Please set the initial availability value of your hall ");
-                boolean available = true;
+                String hallDes = scanner.next();
+//                System.out.println("Please set the initial availability value of your hall ");
+//                boolean available = true;
+                System.out.println("You have created a hall successfully!");
+                ownerHome();
                 break;
 
             case 3:
                 //setStatusMethod
                 System.out.println("Please input the corresponding number of halls");
-                System.out.println("Would you like to apply the discount? Y/N");
-                char c = scanner.next().charAt(0);
-                if (c == 'Y')
+                System.out.println("Would you like to apply the discount? Yes/No");
+                String c = scanner.next();
+                if (c == "Yes")
                 {
                     System.out.println("You has successfully apply the discount");break;
                 }
             case 4:
                 //set
-                System.out.println(" You has successfully change the payment status");break;
+                System.out.println("Please select a booking");
+                //[Bookings]
+                System.out.println("(1) Name: 'Library', Status: unpaid");
+                System.out.println("(2) Home");
+                System.out.println();
+                int a = scanner.nextInt();
+                if (a == 1){
+                    System.out.println("Please select the payment status you want to change to: (Unpaid/Paid)");
+                    String status = scanner.next();
+                    switch (status){
+                        case "Unpaid":
+                            System.out.println("The status of booking has been changed to unpaid!");
+                            break;
+                        case "paid":
+                            System.out.println("The status of booking has been changed to Deposit Paid!");
+                            break;
+                    }
+
+                }
+                if(a == 2){
+                    ownerHome();
+                };break;
 
             case 5:
                 System.out.println(" If you'd like to cancel the booking ,please input 1");break;
 
 
         }
+        ownerHome();
+    }
+
+    private static void manageHall() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("(1) Name: 'Library'");
+        System.out.println("(2) Description: this hall is a very good place to have dinner. The Location is 5 Peter Street, the capacity is 200 people.");
+        System.out.println("(3) Home");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("Please enter the name");
+                String Name = scanner.next();
+                manageHall();
+            case 2:
+                System.out.println("Please enter the description");
+                String Description = scanner.next();
+                manageHall();
+            case 3: ownerHome();
+        }
+
     }
 
     private static void adminHome() {
@@ -216,6 +305,99 @@ public class PrimeEvents {
         }
 
     }
+
+    private static void profile() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("(1) Name: A");
+        System.out.println("(2) Email: zxcv@abc.com");
+        System.out.println("(3) Concession: no");
+        System.out.println("(4) Home");
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.println("Please enter your full name");
+                String fullName = scanner.next();
+                System.out.println(fullName);
+                profile();
+                break;
+            case 2:
+                System.out.println("Please enter your email");
+                String email = scanner.next();
+                profile();
+                break;
+            case 3:
+                System.out.println("Concession? (please enter 'senior citizen' or 'veterans' or 'none')");
+                String concession = scanner.next();
+                profile();
+                break;
+            case 4: customerHome();
+                break;
+
+        }
+    }
+
+    private static void bookingDetail() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Name: 'Library'");
+        System.out.println("Duration: 20/09/2019 - 22/09/2019");
+        System.out.println("Other service: include a meal");
+        System.out.println("Discount rate: 15%");
+        System.out.println("(1) Home");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1: customerHome();
+        }
+
+    }
+
+    private static void cancel() {
+        System.out.println("Your booking has been successfully canceled!");
+    }
+
+    private static void hallDetail() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Name: 'Library'");
+        System.out.println("Description: this hall is a very good place to have dinner. The Location is 5 Peter Street, the capacity is 200 people.");
+        System.out.println("Availability: Yes");
+        System.out.println("(1) Request for quotation");
+        System.out.println("(2) Back to home");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1: requestQuote();
+            case 2: customerHome();
+        }
+    }
+
+    private static void requestQuote() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("how long would you like to book this hall?");
+        String how_long = scanner.nextLine();
+        System.out.println("other service?");
+        String service = scanner.nextLine();
+        System.out.println("what is your purpose to book this hall?");
+        String purpose = scanner.nextLine();
+        System.out.println("Do you have discount keyword?");
+        String keyword = scanner.nextLine();
+        System.out.println("you want to book for: "+how_long);
+        System.out.println("you also want a: "+service);
+        System.out.println("your purpose is: "+purpose);
+        System.out.println("your discount keyword is: "+keyword);
+        System.out.println("Yes/No");
+        String choice = scanner.nextLine();
+        switch (choice) {
+            case "Yes":
+                //send the request
+                System.out.println("Your request has been sent! :D");
+                customerHome();
+                break;
+            case "No": requestQuote();
+        }
+
+
+    }
+
+
 
 
 }
