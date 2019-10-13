@@ -4,18 +4,22 @@ import java.util.Scanner;
 
 public class PrimeEvents {
 
+    private UserList listOfUsers;
 
 
     PrimeEvents()
     {
+        listOfUsers = new UserList();
+        init();
+
     }
 
+    public void init(){
+        listOfUsers.addUser(new User("user1","password", "User 1", true));
+        listOfUsers.addUser(new User("user2","Password", "User 2", true));
+    }
 
-    public
-    static void main(String[] args) {
-         welcome();
-     }
-    private static void welcome() {
+    public  void welcome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("  **************************************************** ");
         System.out.println("** *                                                * **");
@@ -36,17 +40,21 @@ public class PrimeEvents {
             welcome();}
     }
 
-    private static void login() {
+    private  void login() {
+        listOfUsers = new UserList();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your username");
         String name = scanner.nextLine();
         System.out.println("Please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
-        ownerHome();
+        listOfUsers.addUser(new User("abcd","abcd", "xyz", true));
+
+        System.out.println(listOfUsers.getUserList());
+        //customerHome();
     }
 
-    private static void register() {
+    private  void register() {
         Scanner scanner = new Scanner(System.in);
 
 //            User’s name (first name, last name)
@@ -95,7 +103,7 @@ public class PrimeEvents {
         }
     }
 
-    private static void customerHome() {
+    private  void customerHome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Home");
         System.out.println("(1) View halls");
@@ -172,7 +180,7 @@ public class PrimeEvents {
         }
     }
 
-    private static void ownerHome() {
+    private  void ownerHome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("(1) Manage halls");
         System.out.println("(2) Create halls");
@@ -252,7 +260,7 @@ public class PrimeEvents {
         ownerHome();
     }
 
-    private static void manageHall() {
+    private  void manageHall() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("(1) Name: 'Library'");
         System.out.println("(2) Description: this hall is a very good place to have dinner. The Location is 5 Peter Street, the capacity is 200 people.");
@@ -272,7 +280,7 @@ public class PrimeEvents {
 
     }
 
-    private static void adminHome() {
+    private  void adminHome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println(" If you want to Look through the users details, please press1");
         System.out.println(" If you want to Change User Status, please press 2");
@@ -306,7 +314,7 @@ public class PrimeEvents {
 
     }
 
-    private static void profile() {
+    private  void profile() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("(1) Name: A");
         System.out.println("(2) Email: zxcv@abc.com");
@@ -337,7 +345,7 @@ public class PrimeEvents {
         }
     }
 
-    private static void bookingDetail() {
+    private  void bookingDetail() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Name: 'Library'");
         System.out.println("Duration: 20/09/2019 - 22/09/2019");
@@ -351,11 +359,11 @@ public class PrimeEvents {
 
     }
 
-    private static void cancel() {
+    private  void cancel() {
         System.out.println("Your booking has been successfully canceled!");
     }
 
-    private static void hallDetail() {
+    private  void hallDetail() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Name: 'Library'");
         System.out.println("Description: this hall is a very good place to have dinner. The Location is 5 Peter Street, the capacity is 200 people.");
@@ -369,7 +377,7 @@ public class PrimeEvents {
         }
     }
 
-    private static void requestQuote() {
+    private  void requestQuote() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("how long would you like to book this hall?");
         String how_long = scanner.nextLine();
