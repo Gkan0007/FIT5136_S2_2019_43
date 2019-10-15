@@ -32,4 +32,13 @@ public class CustomerList {
         }
         return flag;
     }
+
+    public Customer getCustomer(String name){
+        Customer customer = customerList.get(0);
+        for (Customer cust: customerList){
+            if (cust.getUserName().equals(name))
+                customer = cust;
+        }
+        return customer;
+    }
 }

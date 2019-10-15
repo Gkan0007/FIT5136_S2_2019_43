@@ -67,7 +67,7 @@ public class HallList {
         for (Hall hall : hallList.getHallList()){
             System.out.println( ("(") + i++ + ")" + "\tHall Name:\t\t\t" + hall.getName());
             System.out.println("\tTotal Capacity: \t" + hall.getCapacity());
-            System.out.println("\trice per Person: \t" + hall.getPricePerPerson());
+            System.out.println("\tPrice per Person: \t" + hall.getPricePerPerson());
             System.out.println("\tAverage Rating: \t" + getAverageRating(hall));
             System.out.println();
         }
