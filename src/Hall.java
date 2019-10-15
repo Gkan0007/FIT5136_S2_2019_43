@@ -1,6 +1,8 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Hall {
 
@@ -10,16 +12,28 @@ public class Hall {
     private int capacity;
     private double discount;
     private ArrayList<Review> reviews;
-    private Map<Date, String> availability;
+    private Map<Date, Map<String, Boolean>> availability;
 
-    public Hall(String name, Owner owner, String description, Map<Date, String> availability, int capacity, double discount, ArrayList<Review> reviews) {
+    public Hall(String name, Owner owner, String description, int capacity, double discount) throws ParseException {
         this.name = name;
         this.owner = owner;
         this.description = description;
-        this.availability = availability;
         this.capacity = capacity;
         this.discount = discount;
-        this.reviews = reviews;
+        this.reviews = new ArrayList<>();
+        Map<Date, Map<String, Boolean>> tempAvailability = new HashMap<Date, Map<String, Boolean>>();
+        for (int i = 0; i < 14; i++)
+        {
+            String stringDate = (i+14)+ "/09/2019";
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate);
+            Map<String, Boolean> valueAvilaibility = new HashMap<String, Boolean>();
+            valueAvilaibility.put("Morning", true);
+            valueAvilaibility.put("Afternoon", true);
+            valueAvilaibility.put("Evening", true);
+            tempAvailability.put(date,valueAvilaibility);
+        }
+
+        this.availability = tempAvailability;
     }
 
     public String getName() {
@@ -46,11 +60,11 @@ public class Hall {
         this.description = description;
     }
 
-    public Map<Date, String>  getAvailability() {
+    public Map<Date, Map<String, Boolean>> getAvailability() {
         return availability;
     }
 
-    public void setAvailability(Map<Date, String> availability) {
+    public void setAvailability(Map<Date, Map<String, Boolean>> availability) {
         this.availability = availability;
     }
 

@@ -1,22 +1,38 @@
-
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class PrimeEvents {
 
+
     private UserList listOfUsers;
+    private CustomerList listOfCustomers;
+    private OwnerList listOfOwners;
+    private Admin admin;
+    private HallList listOfHalls;
 
 
     PrimeEvents()
     {
         listOfUsers = new UserList();
+        listOfCustomers = new CustomerList();
+        listOfOwners = new OwnerList();
+        admin = new Admin();
+        listOfHalls = new HallList();
         init();
-
     }
 
     public void init(){
-        listOfUsers.addUser(new User("user1","password", "User 1", true));
-        listOfUsers.addUser(new User("user2","Password", "User 2", true));
+        try {
+            listOfOwners.addOwner(new Owner("user1", "password", "User 2", true, 1));
+            listOfCustomers.addCustomer(new Customer("user2", "Password", "User 2", true, true, true, 1));
+            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15);
+            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("An error occurred. Error: " + e);
+        }
+
     }
 
     public  void welcome() {
@@ -48,9 +64,16 @@ public class PrimeEvents {
         System.out.println("Please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
-        listOfUsers.addUser(new User("abcd","abcd", "xyz", true));
-
-        System.out.println(listOfUsers.getUserList());
+        if(listOfCustomers.isValidUser(name,password))
+            customerHome();
+        else if (listOfOwners.isValidUser(name,password))
+            ownerHome();
+        else if (admin.isValidUser(name,password))
+            adminHome();
+        else {
+            System.out.println("Invalid credentials. Please try again");
+            login();
+        }
         //customerHome();
     }
 
@@ -113,6 +136,7 @@ public class PrimeEvents {
         System.out.println("(5) Manage bookings");
         System.out.println("(6) View quotation status");
         int choice = scanner.nextInt();
+        listOfHalls.getAllHalls();
         switch (choice)
         {
             case 1 :
