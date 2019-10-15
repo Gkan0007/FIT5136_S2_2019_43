@@ -23,9 +23,9 @@ public class PrimeEvents {
     public void init(){
         try {
             listOfOwners.addOwner(new Owner("user1", "password", "User 2", true, 1));
-            listOfCustomers.addCustomer(new Customer("user2", "Password", "User 2", true, true, true, 1));
-            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15);
-            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15);
+            listOfCustomers.addCustomer(new Customer(" ", " ", "User 2", true, true, true, 1));
+            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
+            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
 
         }
         catch (Exception e)
@@ -136,17 +136,20 @@ public class PrimeEvents {
         System.out.println("(5) Manage bookings");
         System.out.println("(6) View quotation status");
         int choice = scanner.nextInt();
-        listOfHalls.getAllHalls();
         switch (choice)
         {
             case 1 :
-                System.out.println("Please select a hall");
+                listOfHalls.getAllHalls(listOfHalls);
+                System.out.println("Please select a hall by the index number");
                 //[Halls]
-                System.out.println("(1) Name: 'Library'");
                 System.out.println();
-                int hall = scanner.nextInt();
-                if (hall == 1){
-                    hallDetail();
+                String input = scanner.next();
+                if(isValidInteger(input))
+                {
+                    listOfHalls.getHallDetails(Integer.parseInt(input) - 1);
+                }
+                else {
+                    
                 }
                 break;
             case 2 :
@@ -429,7 +432,18 @@ public class PrimeEvents {
 
     }
 
+    public boolean isValidInteger(String input){
+        boolean flag = false;
+        try {
+            int givenInput = Integer.parseInt(input);
+            flag = true;
+        }
+        catch ( NumberFormatException e)
+        {
+            System.out.println("Invalid input. Please try again");
+        }
+        return  flag;
 
-
+    }
 
 }

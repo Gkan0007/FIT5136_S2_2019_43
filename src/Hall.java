@@ -12,28 +12,30 @@ public class Hall {
     private int capacity;
     private double discount;
     private ArrayList<Review> reviews;
-    private Map<Date, Map<String, Boolean>> availability;
+    private Boolean[][] availability;
+    private String address;
+    private double hallArea;
+    private int pricePerPerson;
 
-    public Hall(String name, Owner owner, String description, int capacity, double discount) throws ParseException {
+    public Hall(String name, Owner owner, String description, int capacity, double discount, String address, double hallArea, int pricePerPerson) throws ParseException {
         this.name = name;
         this.owner = owner;
         this.description = description;
         this.capacity = capacity;
         this.discount = discount;
+        this.address = address;
+        this.hallArea = hallArea;
+        this.pricePerPerson = pricePerPerson;
         this.reviews = new ArrayList<>();
-        Map<Date, Map<String, Boolean>> tempAvailability = new HashMap<Date, Map<String, Boolean>>();
-        for (int i = 0; i < 14; i++)
-        {
-            String stringDate = (i+14)+ "/09/2019";
-            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate);
-            Map<String, Boolean> valueAvilaibility = new HashMap<String, Boolean>();
-            valueAvilaibility.put("Morning", true);
-            valueAvilaibility.put("Afternoon", true);
-            valueAvilaibility.put("Evening", true);
-            tempAvailability.put(date,valueAvilaibility);
-        }
+        availability = new Boolean[14][3];
 
-        this.availability = tempAvailability;
+        for(int i = 1; i <= 12; i++)
+        {
+            for(int j = 0; j < 3; j++)
+            {
+                availability[i][j] = true;
+            }
+        }
     }
 
     public String getName() {
@@ -60,14 +62,6 @@ public class Hall {
         this.description = description;
     }
 
-    public Map<Date, Map<String, Boolean>> getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Map<Date, Map<String, Boolean>> availability) {
-        this.availability = availability;
-    }
-
     public int getCapacity() {
         return capacity;
     }
@@ -90,5 +84,38 @@ public class Hall {
 
     public void setReviews(ArrayList<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getHallArea() {
+        return hallArea;
+    }
+
+    public void setHallArea(double hallArea) {
+        this.hallArea = hallArea;
+    }
+
+    public int getPricePerPerson() {
+        return pricePerPerson;
+    }
+
+    public void setPricePerPerson(int pricePerPerson) {
+        this.pricePerPerson = pricePerPerson;
+    }
+
+
+    public Boolean[][] getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Boolean[][] xyz) {
+        this.availability = xyz;
     }
 }
