@@ -129,81 +129,93 @@ public class PrimeEvents {
     private  void customerHome() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Home");
-        System.out.println("(1) View halls");
-        System.out.println("(2) View bookings");
-        System.out.println("(3) View my profile");
-        System.out.println("(4) Write a review");
-        System.out.println("(5) Manage bookings");
-        System.out.println("(6) View quotation status");
-        int choice = scanner.nextInt();
-        switch (choice)
-        {
-            case 1 :
-                listOfHalls.getAllHalls(listOfHalls);
-                System.out.println("Please select a hall by the index number");
-                //[Halls]
-                System.out.println();
-                String input = scanner.next();
-                if(isValidInteger(input))
-                {
-                    listOfHalls.getHallDetails(Integer.parseInt(input) - 1);
-                }
-                else {
-                    
-                }
-                break;
-            case 2 :
-                System.out.println("Please select a booking");
-                //[Bookings]
-                System.out.println("(1) Name: 'Library'");
-                System.out.println();
-                int booking = scanner.nextInt();
-                if (booking == 1){
-                    bookingDetail();
-                };break;
-
-            case 3 :
-                profile();break;
-            case 4 :
-                System.out.println("Please select a booking");
-                //[Bookings]
-                System.out.println("(1) Name: 'Library'");
-                System.out.println();
-                int booking2 = scanner.nextInt();
-                switch (booking2){
-                    case 1 :
-                        System.out.println("Please write your review about the booking");
-                        String bookReview = scanner.next();
-                        System.out.println("Your review has been post!");
-                        customerHome();
-                };
-
-                break;
-
-
-            case 5 :
-                System.out.println("Please select a booking to cancel");
-                //[Bookings]
-                System.out.println("(1) Name: 'Library'");
-                System.out.println("If you want to change the date, please contact the admin.");
-                System.out.println();
-                int booking3 = scanner.nextInt();
-                switch (booking3) {
+        boolean flag = true;
+        while(flag) {
+            System.out.println("(1) View halls");
+            System.out.println("(2) View bookings");
+            System.out.println("(3) View my profile");
+            System.out.println("(4) Write a review");
+            System.out.println("(5) Manage bookings");
+            System.out.println("(6) View quotation status");
+            System.out.println("Please select an option from the menu");
+            String choice = scanner.next();
+            if( isValidInteger(choice)) {
+                switch (Integer.parseInt(choice)) {
                     case 1:
-                        cancel();
+                        listOfHalls.getAllHalls(listOfHalls);
+                        System.out.println("Please select a hall by the index number");
+                        System.out.println();
+                        String input = scanner.next();
+                        if (isValidInteger(input)) {
+                            listOfHalls.getHallDetails(Integer.parseInt(input) - 1);
+                            System.out.println("Would you like to request a quotation for this hall: Yes/No");
+                            input = scanner.next();
+                            if(input.equalsIgnoreCase("Yes"))
+                                requestQuote();
+                        } else {
+                            continue;
+                        }
+                        break;
+                    case 2:
+                        System.out.println("Please select a booking");
+                        //[Bookings]
+                        System.out.println("(1) Name: 'Library'");
+                        System.out.println();
+                        int booking = scanner.nextInt();
+                        if (booking == 1) {
+                            bookingDetail();
+                        }
+                        break;
+
+                    case 3:
+                        profile();
+                        break;
+
+                    case 4:
+                        System.out.println("Please select a booking");
+                        //[Bookings]
+                        System.out.println("(1) Name: 'Library'");
+                        System.out.println();
+                        int booking2 = scanner.nextInt();
+                        switch (booking2) {
+                            case 1:
+                                System.out.println("Please write your review about the booking");
+                                String bookReview = scanner.next();
+                                System.out.println("Your review has been post!");
+                                customerHome();
+                        }
+                        ;
+
+                        break;
+
+                    case 5:
+                        System.out.println("Please select a booking to cancel");
+                        //[Bookings]
+                        System.out.println("(1) Name: 'Library'");
+                        System.out.println("If you want to change the date, please contact the admin.");
+                        System.out.println();
+                        int booking3 = scanner.nextInt();
+                        switch (booking3) {
+                            case 1:
+                                cancel();
+                        }
+                        break;
+
+                    case 6:
+                        //[Bookings]
+                        System.out.println("Name: 'Library', Status: pending");
+                        System.out.println();
+                        System.out.println("(1) Home");
+                        int h = scanner.nextInt();
+                        switch (h) {
+                            case 1:
+                                customerHome();
+                        }
+
+                    default:
+                        System.out.println("Invalid choice. Please try again");
                 }
-                break;
-            case 6 :
-                //[Bookings]
-                System.out.println("Name: 'Library', Status: pending");
-                System.out.println();
-                System.out.println("(1) Home");
-                int h = scanner.nextInt();
-                switch (h) {
-                    case 1:
-                        customerHome();
-                }
-                customerHome();
+            }
         }
     }
 
