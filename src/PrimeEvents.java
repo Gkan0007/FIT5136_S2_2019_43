@@ -1,3 +1,7 @@
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class PrimeEvents {
@@ -18,6 +22,13 @@ public class PrimeEvents {
         admin = new Admin();
         listOfHalls = new HallList();
         init();
+
+        System.out.println("  **************************************************** ");
+        System.out.println("** *                                                * **");
+        System.out.println("** *                  Prime Events                  * **");
+        System.out.println("** *                                                * **");
+        System.out.println("  **************************************************** ");
+        System.out.println(" Welcome to Prime Events, hope you enjoy the events! \n");
     }
 
     public void init(){
@@ -37,23 +48,30 @@ public class PrimeEvents {
 
     public  void welcome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("  **************************************************** ");
-        System.out.println("** *                                                * **");
-        System.out.println("** *                  Prime Events                  * **");
-        System.out.println("** *                                                * **");
-        System.out.println("  **************************************************** ");
-        System.out.println(" Welcome to Prime Events, hope you enjoy the events! \n");
-        System.out.print("- Please press the 'Enter' key to the homepage ...\n");
+        System.out.print("- Please any key to navigate to Login/Register view ...\n");
         Scanner s = new Scanner(System.in);
         s.nextLine();
         System.out.println("1.Login");
         System.out.println("2.Register");
-        int choice = scanner.nextInt();
-        if (choice == 1) { login();}
-        if (choice == 2) { register();}
-        else {
-            System.out.println("Your input is invalid, please try again!");
-            welcome();}
+        String input = scanner.next();
+        if(isValidInteger(input)) {
+            int choice = Integer.parseInt(input);
+            if (choice == 1) {
+                login();
+            }
+            else if (choice == 2) {
+                register();
+            }
+            else {
+                System.out.println("Your choice is invalid. Please try again!");
+                welcome();
+            }
+        }
+        else
+        {
+            System.out.println("Invalid input format. Please try again");
+            welcome();
+        }
     }
 
     private  void login() {
@@ -131,12 +149,13 @@ public class PrimeEvents {
         System.out.println("Home");
         boolean flag = true;
         while(flag) {
-            System.out.println("(1) View halls");
+            System.out.println("(1) View halls and request a quotation");
             System.out.println("(2) View bookings");
             System.out.println("(3) View my profile");
             System.out.println("(4) Write a review");
             System.out.println("(5) Manage bookings");
             System.out.println("(6) View quotation status");
+            System.out.println("(7) Logout");
             System.out.println("Please select an option from the menu");
             String choice = scanner.next();
             if( isValidInteger(choice)) {
@@ -147,11 +166,14 @@ public class PrimeEvents {
                         System.out.println();
                         String input = scanner.next();
                         if (isValidInteger(input)) {
-                            listOfHalls.getHallDetails(Integer.parseInt(input) - 1);
+                            int hallIndex = Integer.parseInt(input) - 1;
+                            listOfHalls.getHallDetails(hallIndex);
                             System.out.println("Would you like to request a quotation for this hall: Yes/No");
                             input = scanner.next();
                             if(input.equalsIgnoreCase("Yes"))
-                                requestQuote();
+                                requestQuote(hallIndex);
+                            else if(!input.equalsIgnoreCase("No"))
+                                System.out.println("Invalid choice. Considering it as No.");
                         } else {
                             continue;
                         }
@@ -211,9 +233,15 @@ public class PrimeEvents {
                             case 1:
                                 customerHome();
                         }
+                    case 7:
+                        System.out.println("Loggin out...");
+                        System.out.println("Logged out");
+                        flag = false;
+                        break;
 
                     default:
                         System.out.println("Invalid choice. Please try again");
+
                 }
             }
         }
@@ -411,22 +439,79 @@ public class PrimeEvents {
         System.out.println("(2) Back to home");
         int choice = scanner.nextInt();
         switch (choice) {
-            case 1: requestQuote();
+            case 1: requestQuote(1);
             case 2: customerHome();
         }
     }
 
-    private  void requestQuote() {
+    private  void requestQuote(int hallIndex) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("how long would you like to book this hall?");
-        String how_long = scanner.nextLine();
+        boolean flag = true;
+        Date quoteDate = new Date();
+        int timeSlot;
+
+        while(flag){
+            System.out.println("Enter the date as dd/MM/yyyy ");
+            String dateInput = scanner.next();
+            if(parseDate(dateInput) != null){
+                System.out.println("Choose the time slot.");
+                System.out.println("(1) Morning");
+                System.out.println("(2) Afternoon");
+                System.out.println("(3) Evening");
+                System.out.println("Enter the index number of chosen time slot");
+                String timeInput = scanner.next();
+                if(isValidInteger(timeInput))
+                {
+                    int slot = Integer.parseInt(timeInput);
+                    if(slot >= 1 && slot <= 3)
+                    {
+                        long timeDifference =  parseDate(dateInput).getTime() - parseDate("07/09/2019").getTime();
+                        long daysDifference = timeDifference / (60 * 60 * 1000 * 24);
+                        if(daysDifference >= 0 && daysDifference <= 12)
+                        {
+                            if (listOfHalls.getHallDetails(hallIndex).getAvailability()[(int) daysDifference][slot - 1]) {
+                                System.out.println(" abcd ");
+                                quoteDate = parseDate(dateInput);
+                                timeSlot = slot;
+                                flag = false;
+                            }
+                            else {
+                                System.out.println("Slot has already been booked. Please choose another slot");
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("Invalid date chosen. Please choose a date from the dates displayed.");
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Invalid time slot chosen. Please try again");
+                    }
+                }
+                else
+                {
+                    System.out.println("Invalid input type entered. Please try again");
+
+                }
+
+            }
+        }
+
+        flag = true;
+        while(flag)
+        {
+            flag = false;
+        }
+        
+
         System.out.println("other service?");
         String service = scanner.nextLine();
         System.out.println("what is your purpose to book this hall?");
         String purpose = scanner.nextLine();
         System.out.println("Do you have discount keyword?");
         String keyword = scanner.nextLine();
-        System.out.println("you want to book for: "+how_long);
+        System.out.println("you want to book for: ");
         System.out.println("you also want a: "+service);
         System.out.println("your purpose is: "+purpose);
         System.out.println("your discount keyword is: "+keyword);
@@ -438,10 +523,8 @@ public class PrimeEvents {
                 System.out.println("Your request has been sent! :D");
                 customerHome();
                 break;
-            case "No": requestQuote();
+            case "No": requestQuote(1);
         }
-
-
     }
 
     public boolean isValidInteger(String input){
@@ -452,9 +535,34 @@ public class PrimeEvents {
         }
         catch ( NumberFormatException e)
         {
-            System.out.println("Invalid input. Please try again");
+            ;
+        }
+        catch (Exception e)
+        {
+            System.out.println("Unknown exception occurred");
         }
         return  flag;
+
+    }
+
+    public Date parseDate(String input){
+        Date date =  new Date();
+        try {
+            SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            dateFormat.setLenient(false);
+            date = dateFormat.parse(input);
+        }
+        catch ( ParseException e)
+        {
+            System.out.println("Invalid Date format. Please try again");
+            date = null;
+        }
+        catch (Exception e)
+        {
+            System.out.println("Unknown exception occurred");
+            date = null;
+        }
+        return  date;
 
     }
 

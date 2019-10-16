@@ -17,7 +17,7 @@ public class Hall {
     private double hallArea;
     private int pricePerPerson;
 
-    public Hall(String name, Owner owner, String description, int capacity, double discount, String address, double hallArea, int pricePerPerson) throws ParseException {
+    public Hall(String name, Owner owner, String description, int capacity, double discount, String address, double hallArea, int pricePerPerson){
         this.name = name;
         this.owner = owner;
         this.description = description;
@@ -27,13 +27,16 @@ public class Hall {
         this.hallArea = hallArea;
         this.pricePerPerson = pricePerPerson;
         this.reviews = new ArrayList<>();
-        availability = new Boolean[14][3];
+        availability = new Boolean[12][3];
 
-        for(int i = 1; i <= 12; i++)
+        for(int i = 0; i < 12; i++)
         {
             for(int j = 0; j < 3; j++)
             {
-                availability[i][j] = true;
+                if (j == 2)
+                    availability[i][j] = false;
+                else
+                    availability[i][j] = true;
             }
         }
     }
@@ -115,7 +118,20 @@ public class Hall {
         return availability;
     }
 
-    public void setAvailability(Boolean[][] xyz) {
-        this.availability = xyz;
+    public void setAvailability(Boolean[][] availability) {
+        this.availability = availability;
+    }
+
+    public double getAverageRating(){
+        double avgRating = 0.0;
+        if(getReviews().size() == 0)
+            ;
+        else{
+            for (Review review : getReviews()){
+                avgRating += review.getRating();
+            }
+            avgRating /= (getReviews().size());
+        }
+        return avgRating;
     }
 }

@@ -1,6 +1,4 @@
-import jdk.nashorn.internal.runtime.ParserException;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,43 +21,45 @@ public class HallList {
         hallList = new ArrayList<>();
     }
 
-    public boolean createHall(String name, Owner owner, String description, int capacity, double discount, String address, double hallArea, int pricePerPerson) throws ParseException {
+    public boolean createHall(String name, Owner owner, String description, int capacity, double discount, String address, double hallArea, int pricePerPerson) {
         hallList.add(new Hall(name, owner, description, capacity, discount, address, hallArea, pricePerPerson));
         return false;
     }
 
-    public void getHallDetails(int id){
+    public Hall getHallDetails(int id){
 
         Hall hall = hallList.get(id);
         System.out.println();
         System.out.println();
 
-        System.out.println(hall.getName());
-        System.out.println(hall.getOwner().getName());
-        System.out.println(hall.getDescription());
-        System.out.println(hall.getCapacity());
-        System.out.println(hall.getDiscount());
-        System.out.println(hall.getHallArea());
-        System.out.println(hall.getAddress());
-        System.out.println(hall.getPricePerPerson());
+        System.out.println("Hall Name:\t\t\t" + hall.getName());
+        System.out.println("Owner:\t\t\t\t" + hall.getOwner().getName());
+        System.out.println("Description:\t\t" + hall.getDescription());
+        System.out.println("Capacity:\t\t\t" + hall.getCapacity() + " people");
+        System.out.println("Discount:\t\t\t" + hall.getDiscount() + "%");
+        System.out.println("Hall Area:\t\t\t" + hall.getHallArea() + "sqft");
+        System.out.println("Address:\t\t\t" + hall.getAddress());
+        System.out.println("Price per person:\t$" + hall.getPricePerPerson() );
+        System.out.println("Availability");
         System.out.println("Date\t\t\t Morning\t Afternoon\t  Evening\t");
-        for(int i = 1; i <= 12; i++)
+        for(int i = 0; i < 12; i++)
         {
             String stringDate = new String();
-            if (i <= 3 )
-                System.out.print("0" + (i+6) + "/09/2019\t\t");
+            if (i < 3 )
+                System.out.print("0" + (i+7) + "/09/2019\t");
             else
-                System.out.print((i+6) + "/09/2019\t\t");
+                System.out.print((i+7) + "/09/2019\t");
 
             for(int j = 0; j < 3; j++)
             {
                 if (hall.getAvailability()[i][j] == true)
-                    System.out.print("Available\t");
+                    System.out.print("\tAvailable");
                 else
-                    System.out.print("Unavailable\t");
+                    System.out.print("\t Booked\t");
             }
             System.out.println();
         }
+        return hall;
     }
 
     public void getAllHalls(HallList hallList){
@@ -74,15 +74,6 @@ public class HallList {
     }
 
     public double getAverageRating(Hall hall){
-        double avgRating = 0.0;
-        if(hall.getReviews().size() == 0)
-            ;
-        else{
-            for (Review review : hall.getReviews()){
-                avgRating += review.getRating();
-            }
-            avgRating /= (hall.getReviews().size());
-        }
-        return avgRating;
+        return hall.getAverageRating();
     }
 }
