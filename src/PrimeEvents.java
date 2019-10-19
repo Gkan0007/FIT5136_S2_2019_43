@@ -175,8 +175,9 @@ public class PrimeEvents {
                             if(input.equalsIgnoreCase("Y"))
                                 requestQuote(hallIndex);
                             else if(!input.equalsIgnoreCase("N"))
-                                System.out.println("Invalid choice. Considering it as No.");
+                                continue;
                         } else {
+                            System.out.println("Invalid choice. Considering it as No.");
                             continue;
                         }
                         break;
@@ -478,7 +479,7 @@ public class PrimeEvents {
         Date quoteDate = new Date();
         int timeSlot;
         int capacity;
-        double discount;
+        String discount;
         String purpose;
         boolean cateringOptions;
 
@@ -543,7 +544,7 @@ public class PrimeEvents {
             if(isValidInteger(input)){
                 capacity = Integer.parseInt(input);
                 if(capacity > 0 && capacity <= listOfHalls.getHallDetails(hallIndex).getCapacity()){
-                    ;
+                    flag = false;
                 }
                 else{
                     System.out.println("Number of people attending the event is not correct. Please try again");
@@ -572,14 +573,33 @@ public class PrimeEvents {
 
 
         System.out.println("Choose your purpose for booking this hall?");
-        System.out.println("(1) ");
+        System.out.println("(1) Birthday");
+        System.out.println("(2) Wedding ceremony");
+        System.out.println("(3) Wedding reception");
+        System.out.println("(4) Anniversary");
         purpose = scanner.nextLine();
+
+        System.out.println("Would you like to apply for discount? Y/N");
+        input = scanner.next();
+        if(input.equalsIgnoreCase("Y")){
+            System.out.println("Enter your discount keyword.");
+            discount = scanner.next();
+        }
+        else if (input.equalsIgnoreCase("N"))
+        {
+            cateringOptions = false;
+        }
+        else
+        {
+            System.out.println("Invalid choice. Considering it as No.");
+            cateringOptions = false;
+        }
         System.out.println("Do you have discount keyword?");
-        String keyword = scanner.nextLine();
+        String keyword = scanner.next();
+
         System.out.println("you want to book for: ");
         System.out.println("you also want a: ");
         System.out.println("your purpose is: "+purpose);
-        System.out.println("your discount keyword is: "+keyword);
         System.out.println("Yes/No");
         String choice = scanner.nextLine();
         switch (choice) {
@@ -591,6 +611,7 @@ public class PrimeEvents {
             case "No": requestQuote(1);
         }
     }
+
     public boolean isValidInteger(String input){
         boolean flag = false;
         try {
