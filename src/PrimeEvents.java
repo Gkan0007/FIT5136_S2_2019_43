@@ -517,7 +517,7 @@ public class PrimeEvents {
             if(isValidInteger(input)){
                 capacity = Integer.parseInt(input);
                 if(capacity > 0 && capacity <= listOfHalls.getHallDetails(hallIndex).getCapacity()){
-                    ;
+                    flag = false;
                 }
                 else{
                     System.out.println("Number of people attending the event is not correct. Please try again");
@@ -565,6 +565,7 @@ public class PrimeEvents {
             case "No": requestQuote(1);
         }
     }
+
     public boolean isValidInteger(String input){
         boolean flag = false;
         try {
