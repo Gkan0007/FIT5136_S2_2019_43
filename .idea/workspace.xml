@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1SPjFg9N8WANA8ToVYTzyqsM9iG" />
+=======
   <component name="ChangeListManager">
     <list default="true" id="d907a77a-230c-4647-84b8-aaf4f4b78c99" name="Default Changelist" comment="1">
       <change afterPath="$PROJECT_DIR$/src/PES.java" afterDir="false" />
@@ -175,30 +181,15 @@
       </pane>
     </panes>
   </component>
+>>>>>>> fa517c084444a78787249624a8f61bac373dfb90
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RunManager">
     <configuration name="Execute" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Execute" />
-      <module name="Prime Events" />
+      <module name="FIT5136_S2_2019_43" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -209,6 +200,8 @@
       </list>
     </recent_temporary>
   </component>
+<<<<<<< HEAD
+=======
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -446,4 +439,5 @@
       </provider>
     </entry>
   </component>
+>>>>>>> fa517c084444a78787249624a8f61bac373dfb90
 </project>
