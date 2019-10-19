@@ -12,7 +12,7 @@ public class Hall {
     private int capacity;
     private double discount;
     private ArrayList<Review> reviews;
-    private Boolean[][] availability;
+    private ArrayList<Boolean[]> availability;
     private String address;
     private double hallArea;
     private int pricePerPerson;
@@ -27,17 +27,24 @@ public class Hall {
         this.hallArea = hallArea;
         this.pricePerPerson = pricePerPerson;
         this.reviews = new ArrayList<>();
-        availability = new Boolean[12][3];
-
+        availability = new ArrayList<Boolean[]>();
+        Boolean[] array;
         for(int i = 0; i < 12; i++)
         {
-            for(int j = 0; j < 3; j++)
+            array = new Boolean[]{true, true, true};
+            if(i == 3)
             {
-                if (j == 2)
-                    availability[i][j] = false;
-                else
-                    availability[i][j] = true;
+                array = new Boolean[]{true, false, true};
             }
+            if(i == 7)
+            {
+                array = new Boolean[]{true, true, false};
+            }
+            if(i == 11)
+            {
+                array = new Boolean[]{false, true, true};
+            }
+            availability.add(array);
         }
     }
 
@@ -114,11 +121,11 @@ public class Hall {
     }
 
 
-    public Boolean[][] getAvailability() {
+    public ArrayList<Boolean[]> getAvailability() {
         return availability;
     }
 
-    public void setAvailability(Boolean[][] availability) {
+    public void setAvailability(ArrayList<Boolean[]> availability) {
         this.availability = availability;
     }
 
