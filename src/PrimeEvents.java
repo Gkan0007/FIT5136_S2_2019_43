@@ -234,6 +234,32 @@ public class PrimeEvents {
                         System.out.println("Please select a hall by the index number");
                         System.out.println();
                         String h = scanner.next();
+                        if (h.equals("H")){
+                            customerHome();
+                        }
+                        else if (isValidInteger(h)) {
+                            int hallIndex = Integer.parseInt(h) - 1;
+                            listOfQuotations.getQuotationDetails(hallIndex);
+                            System.out.println("Would you like to continue with the booking?: Y/N");
+                            input = scanner.next();
+                            if(input.equalsIgnoreCase("Y")){
+                                System.out.println("Would you like to proceed with the payment?: Y/N");
+                                input = scanner.next();
+                                if(input.equalsIgnoreCase("Y")){
+                                    System.out.println("Proceeding to payment site");
+                                    try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    System.out.println("Payment received");
+                                    System.out.println();
+                                }
+                            }
+                            customerHome();
+                        }
+
+
 
 
                     case 7:
