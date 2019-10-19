@@ -7,7 +7,7 @@ public class Booking extends Quotation {
     private Date bookingDate;
     private String bookingTime;
 
-    public Booking(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, String cateringOptions, Hall hall, Customer customer, boolean paymentStatus, Date bookingDate, String bookingTime, int bookingId) {
+    public Booking(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, boolean cateringOptions, Hall hall, Customer customer, boolean paymentStatus, Date bookingDate, String bookingTime, int bookingId) {
         super(quoteId, capacity, quoteStatus, quoteTotalPrice, quoteDate, quoteTime, discount, cateringOptions, hall, customer);
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;

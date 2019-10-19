@@ -1,4 +1,4 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +12,7 @@ public class Hall {
     private int capacity;
     private double discount;
     private ArrayList<Review> reviews;
-    private ArrayList<Boolean[]> availability;
+    private Boolean[][] availability;
     private String address;
     private double hallArea;
     private int pricePerPerson;
@@ -27,24 +27,17 @@ public class Hall {
         this.hallArea = hallArea;
         this.pricePerPerson = pricePerPerson;
         this.reviews = new ArrayList<>();
-        availability = new ArrayList<Boolean[]>();
-        Boolean[] array;
+        availability = new Boolean[12][3];
+
         for(int i = 0; i < 12; i++)
         {
-            array = new Boolean[]{true, true, true};
-            if(i == 3)
+            for(int j = 0; j < 3; j++)
             {
-                array = new Boolean[]{true, false, true};
+                if (j == 2)
+                    availability[i][j] = false;
+                else
+                    availability[i][j] = true;
             }
-            if(i == 7)
-            {
-                array = new Boolean[]{true, true, false};
-            }
-            if(i == 11)
-            {
-                array = new Boolean[]{false, true, true};
-            }
-            availability.add(array);
         }
     }
 
@@ -121,11 +114,11 @@ public class Hall {
     }
 
 
-    public ArrayList<Boolean[]> getAvailability() {
+    public Boolean[][] getAvailability() {
         return availability;
     }
 
-    public void setAvailability(ArrayList<Boolean[]> availability) {
+    public void setAvailability(Boolean[][] availability) {
         this.availability = availability;
     }
 

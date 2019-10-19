@@ -9,11 +9,11 @@ public class Quotation {
     private Date quoteDate;
     private String quoteTime;
     private double discount;
-    private String cateringOptions;
+    private boolean cateringOptions;
     private Hall hall;
     private Customer customer;
 
-    public Quotation(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, String cateringOptions, Hall hall, Customer customer) {
+    public Quotation(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, boolean cateringOptions, Hall hall, Customer customer) {
         this.quoteId = quoteId;
         this.capacity = capacity;
         this.quoteStatus = quoteStatus;
@@ -82,11 +82,11 @@ public class Quotation {
         this.discount = discount;
     }
 
-    public String getCateringOptions() {
+    public boolean getCateringOptions() {
         return cateringOptions;
     }
 
-    public void setCateringOptions(String cateringOptions) {
+    public void setCateringOptions(boolean cateringOptions) {
         this.cateringOptions = cateringOptions;
     }
 

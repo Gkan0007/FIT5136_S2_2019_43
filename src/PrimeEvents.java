@@ -10,6 +10,7 @@ public class PrimeEvents {
     private UserList listOfUsers;
     private CustomerList listOfCustomers;
     private OwnerList listOfOwners;
+    private QuotationList listOfQuotations;
     private Admin admin;
     private HallList listOfHalls;
 
@@ -21,6 +22,7 @@ public class PrimeEvents {
         listOfOwners = new OwnerList();
         admin = new Admin();
         listOfHalls = new HallList();
+        listOfQuotations = new QuotationList();
         init();
 
         System.out.println("  **************************************************** ");
@@ -37,7 +39,7 @@ public class PrimeEvents {
             listOfCustomers.addCustomer(new Customer(" ", " ", "User 2", true, true, true, 1));
             listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
             listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
-
+            listOfQuotations.createQuotation(1,100,true,2000.0,new Date(),"Evening",0.15,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
         }
         catch (Exception e)
         {
@@ -154,7 +156,7 @@ public class PrimeEvents {
             System.out.println("(3) View my profile");
             System.out.println("(4) Write a review");
             System.out.println("(5) Manage bookings");
-            System.out.println("(6) View quotation status");
+            System.out.println("(6) View quotations");
             System.out.println("(7) Logout");
             System.out.println("Please select an option from the menu");
             String choice = scanner.next();
@@ -167,12 +169,12 @@ public class PrimeEvents {
                         String input = scanner.next();
                         if (isValidInteger(input)) {
                             int hallIndex = Integer.parseInt(input) - 1;
-                            listOfHalls.displayHallDetails(hallIndex);
-                            System.out.println("Would you like to request a quotation for this hall: Y/N");
+                            listOfHalls.getHallDetails(hallIndex);
+                            System.out.println("Would you like to request a quotation for this hall: Yes/No");
                             input = scanner.next();
-                            if(input.equalsIgnoreCase("Y"))
+                            if(input.equalsIgnoreCase("Yes"))
                                 requestQuote(hallIndex);
-                            else if(!input.equalsIgnoreCase("N"))
+                            else if(!input.equalsIgnoreCase("No"))
                                 System.out.println("Invalid choice. Considering it as No.");
                         } else {
                             continue;
@@ -224,15 +226,15 @@ public class PrimeEvents {
                         break;
 
                     case 6:
-                        //[Bookings]
-                        System.out.println("Name: 'Library', Status: pending");
+                        //[Quotations]
+                        listOfQuotations.getAllQuotations(listOfQuotations);
                         System.out.println();
-                        System.out.println("(1) Home");
-                        int h = scanner.nextInt();
-                        switch (h) {
-                            case 1:
-                                customerHome();
-                        }
+                        System.out.println("(H) Home");
+                        System.out.println("Please select a hall by the index number");
+                        System.out.println();
+                        String h = scanner.next();
+
+
                     case 7:
                         System.out.println("Loggin out...");
                         System.out.println("Logged out");
@@ -449,107 +451,70 @@ public class PrimeEvents {
         boolean flag = true;
         Date quoteDate = new Date();
         int timeSlot;
-        int capacity;
-        double discount;
-        String purpose;
-        boolean cateringOptions;
-
-
 
         while(flag){
-            System.out.println("Please enter the slot number for the chosen date");
-            String choice = scanner.next();
-            if(isValidInteger(choice)){
-                int serialNo = Integer.parseInt(choice);
-                if(serialNo > 0 && serialNo <= listOfHalls.getHallDetails(hallIndex).getAvailability().size())
+            System.out.println("Enter the date as dd/MM/yyyy ");
+            String dateInput = scanner.next();
+            if(parseDate(dateInput) != null){
+                System.out.println("Choose the time slot.");
+                System.out.println("(1) Morning");
+                System.out.println("(2) Afternoon");
+                System.out.println("(3) Evening");
+                System.out.println("Enter the index number of chosen time slot");
+                String timeInput = scanner.next();
+                if(isValidInteger(timeInput))
                 {
-                    System.out.println("Choose the time slot.");
-                    System.out.println("(1) Morning");
-                    System.out.println("(2) Afternoon");
-                    System.out.println("(3) Evening");
-                    System.out.println("Enter the index number of chosen time slot");
-                    String timeInput = scanner.next();
-                    if(isValidInteger(timeInput))
+                    int slot = Integer.parseInt(timeInput);
+                    if(slot >= 1 && slot <= 3)
                     {
-                        timeSlot = Integer.parseInt(timeInput);
-                        if(timeSlot >= 1 && timeSlot <= 3 )
+                        long timeDifference =  parseDate(dateInput).getTime() - parseDate("07/09/2019").getTime();
+                        long daysDifference = timeDifference / (60 * 60 * 1000 * 24);
+                        if(daysDifference >= 0 && daysDifference <= 12)
                         {
-                            if (listOfHalls.getHallDetails(hallIndex).getAvailability().get(serialNo - 1)[timeSlot - 1])
-                            {
-                                quoteDate.setTime(parseDate("07/09/2019").getTime() + ((serialNo - 1) * 86400000));
-                                System.out.println( quoteDate);
+                            if (listOfHalls.getHallDetails(hallIndex).getAvailability()[(int) daysDifference][slot - 1]) {
+                                System.out.println(" abcd ");
+                                quoteDate = parseDate(dateInput);
+                                timeSlot = slot;
                                 flag = false;
                             }
-                            else
-                            {
+                            else {
                                 System.out.println("Slot has already been booked. Please choose another slot");
                             }
                         }
                         else
                         {
-                            System.out.println("Invalid time slot chosen. Please try again");
+                            System.out.println("Invalid date chosen. Please choose a date from the dates displayed.");
                         }
                     }
                     else
                     {
-                        System.out.println("Invalid input type entered. Please try again");
+                        System.out.println("Invalid time slot chosen. Please try again");
                     }
                 }
                 else
                 {
-                    System.out.println("Invalid date chosen. Please choose a date from the dates displayed by entering the respective serialNo.");
-                }
-            }
-            else
-            {
-                System.out.println("Invalid input type entered. Please try again");
-            }
+                    System.out.println("Invalid input type entered. Please try again");
 
+                }
+
+            }
         }
 
         flag = true;
-        System.out.println("Enter the number of people attending the event" );
         while(flag)
         {
-            String input = scanner.next();
-            if(isValidInteger(input)){
-                capacity = Integer.parseInt(input);
-                if(capacity > 0 && capacity <= listOfHalls.getHallDetails(hallIndex).getCapacity()){
-                    ;
-                }
-                else{
-                    System.out.println("Number of people attending the event is not correct. Please try again");
-                }
-            }
-            else{
-                System.out.println("Invalid input type entered. Please try again");
-            }
+            flag = false;
         }
+        
 
-
-        System.out.println("Would you like catering for the event? Y/N" );
-        String input = scanner.next();
-        if(input.equalsIgnoreCase("Y")){
-            cateringOptions = true;
-        }
-        else if (input.equalsIgnoreCase("N"))
-        {
-            cateringOptions = false;
-        }
-        else
-        {
-            System.out.println("Invalid choice. Considering it as No.");
-            cateringOptions = false;
-        }
-
-
-        System.out.println("Choose your purpose for booking this hall?");
-        System.out.println("(1) ");
-        purpose = scanner.nextLine();
+        System.out.println("other service?");
+        String service = scanner.nextLine();
+        System.out.println("what is your purpose to book this hall?");
+        String purpose = scanner.nextLine();
         System.out.println("Do you have discount keyword?");
         String keyword = scanner.nextLine();
         System.out.println("you want to book for: ");
-        System.out.println("you also want a: ");
+        System.out.println("you also want a: "+service);
         System.out.println("your purpose is: "+purpose);
         System.out.println("your discount keyword is: "+keyword);
         System.out.println("Yes/No");
