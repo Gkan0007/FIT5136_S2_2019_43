@@ -7,8 +7,8 @@ public class Booking extends Quotation {
     private Date bookingDate;
     private String bookingTime;
 
-    public Booking(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, boolean cateringOptions, Hall hall, Customer customer, boolean paymentStatus, Date bookingDate, String bookingTime, int bookingId) {
-        super(quoteId, capacity, quoteStatus, quoteTotalPrice, quoteDate, quoteTime, discount, cateringOptions, hall, customer);
+    public Booking(Quotation quotation, boolean paymentStatus, Date bookingDate, String bookingTime, int bookingId) {
+        super(quotation.getQuoteId(), quotation.getCapacity(), quotation.isQuoteStatus(), quotation.getQuoteTotalPrice(), quotation.getQuoteDate(), quotation.getQuoteTime(), quotation.getDiscount(), quotation.getCateringOptions(), quotation.getHall(), quotation.getCustomer());
         this.bookingDate = bookingDate;
         this.bookingTime = bookingTime;
         this.paymentStatus = paymentStatus;
