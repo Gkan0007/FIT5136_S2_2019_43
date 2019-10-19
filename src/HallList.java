@@ -1,4 +1,5 @@
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,13 @@ public class HallList {
 
     public Hall getHallDetails(int id){
 
+        return hallList.get(id);
+    }
+
+    public void displayHallDetails(int id){
+
         Hall hall = hallList.get(id);
+
         System.out.println();
         System.out.println();
 
@@ -41,25 +48,32 @@ public class HallList {
         System.out.println("Address:\t\t\t" + hall.getAddress());
         System.out.println("Price per person:\t$" + hall.getPricePerPerson() );
         System.out.println("Availability");
-        System.out.println("Date\t\t\t Morning\t Afternoon\t  Evening\t");
-        for(int i = 0; i < 12; i++)
+        System.out.println("Sno\tDate\t\t\t Morning\t Afternoon\t  Evening\t");
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            date = format.parse("07/09/2019");
+        }
+        catch (ParseException e){
+            System.out.println("Date parse ecxeption: " + e);
+        }
+        int sno = 1;
+        for(Boolean[] array : hall.getAvailability())
         {
-            String stringDate = new String();
-            if (i < 3 )
-                System.out.print("0" + (i+7) + "/09/2019\t");
-            else
-                System.out.print((i+7) + "/09/2019\t");
-
-            for(int j = 0; j < 3; j++)
+            System.out.print(sno++ + "\t" +format.format(date) + "\t\t");
+            for(int i = 0; i < 3; i++)
             {
-                if (hall.getAvailability()[i][j] == true)
-                    System.out.print("\tAvailable");
+                if(array[i]){
+                    System.out.print("Available\t");
+                }
                 else
-                    System.out.print("\t Booked\t");
+                {
+                    System.out.print(" Booked\t\t");
+                }
             }
             System.out.println();
+            date.setTime(date.getTime() + 86400000);
         }
-        return hall;
     }
 
     public void getAllHalls(HallList hallList){
