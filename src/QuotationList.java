@@ -23,10 +23,26 @@ public class QuotationList {
     public Quotation getQuotationDetails(int id){
         Quotation quotation = quotationList.get(id);
         System.out.println();
-        System.out.println();
-        System.out.println("Quotation ID:\t\t\t" + quotation.getQuoteId());
-        System.out.println("Hall Name:\t\t\t" + quotation.getHall().getName());
-        System.out.println("Hall Name:\t\t\t" + quotation.isQuoteStatus());
+        System.out.println("Quotation ID:\t\t\t\t" + quotation.getQuoteId());
+        System.out.println("Hall Capacity:\t\t\t\t" + quotation.getCapacity());
+        if (quotation.isQuoteStatus()){
+            System.out.println("Quotation Status:\t\t\t" + "Accepted");
+        }else {
+            System.out.println("Quotation Status:t\t\t\t" + "Pending");
+        }
+        System.out.println("Quotation Total Price:\t\t" + quotation.getQuoteTotalPrice());
+        System.out.println("Quotation Date:\t\t\t\t" + dateFormat.format(quotation.getQuoteDate()));
+        System.out.println("Quotation Time:\t\t\t\t" + quotation.getQuoteTime());
+        System.out.println("Discount:\t\t\t\t\t" + quotation.getDiscount() * 100 + "%");
+        if (quotation.isQuoteStatus()){
+            System.out.println("Catering Options:\t\t\t" + "Yes");
+        }else {
+            System.out.println("Catering Options:\t\t\t" + "No");
+        }
+        System.out.println("Hall Name:\t\t\t\t\t" + quotation.getHall().getName());
+        System.out.println("Customer Name:\t\t\t\t\t" + quotation.getCustomer().getUserName());
+
+
         return quotation;
     }
 
