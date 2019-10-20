@@ -2,7 +2,9 @@ import java.util.ArrayList;
 
 public class OwnerList {
     private ArrayList<Owner> ownerList;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public OwnerList()
     {
         ownerList = new ArrayList<>();

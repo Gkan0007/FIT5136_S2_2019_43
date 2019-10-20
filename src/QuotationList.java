@@ -6,7 +6,9 @@ public class QuotationList {
 
 
     private ArrayList<Quotation> quotationList;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public QuotationList() {
         quotationList = new ArrayList<>();
     }

@@ -3,7 +3,9 @@ public class Review  {
     private String description;
     private Customer customer;
     private int bookingId;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public Review(int rating, String description, Customer customer, int bookingId) {
         this.rating = rating;
         this.description = description;
