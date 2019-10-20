@@ -29,13 +29,6 @@ public class PES {
         listOfBookings = new BookingList();
         userInterface = new UserInterface();
         init();
-
-        System.out.println("  **************************************************** ");
-        System.out.println("** *                                                * **");
-        System.out.println("** *                  Prime Events                  * **");
-        System.out.println("** *                                                * **");
-        System.out.println("  **************************************************** ");
-        System.out.println(" Welcome to Prime Events, hope you enjoy the events! \n");
     }
 
     public void init(){
@@ -58,8 +51,7 @@ public class PES {
         listOfBookings.getBookingList().get(1).getHall().addReview(4, "One of the best", listOfCustomers.getCustomerByUserName("cust3"), 2);
         listOfBookings.getBookingList().get(2).getHall().addReview(3, "Good service", listOfCustomers.getCustomerByUserName("cust4"), 3);
 
-        ArrayList<Boolean[]> availability = new ArrayList<>();
-        availability = listOfHalls.getHallDetails(1).getAvailability();
+        ArrayList<Boolean[]> availability = listOfHalls.getHallDetails(1).getAvailability();
         availability.get(4)[1] = false;
         availability.get(11)[0] = false;
         availability.get(8)[2] = false;
@@ -70,7 +62,6 @@ public class PES {
 
     public  void welcome() {
         Scanner scanner = new Scanner(System.in);
-        userInterface.promptInputMessage("- Please any key to navigate to Login/Register view ...\n");
         Scanner s = new Scanner(System.in);
         s.nextLine();
         System.out.println("1.Login");
@@ -85,13 +76,13 @@ public class PES {
                 register();
             }
             else {
-                System.out.println("Your choice is invalid. Please try again!");
+                userInterface.displayMessage("Your choice is invalid. Please try again!");
                 welcome();
             }
         }
         else
         {
-            System.out.println("Invalid input format. Please try again");
+            userInterface.displayError("Invalid input format. Please try again");
             welcome();
         }
     }
@@ -116,7 +107,7 @@ public class PES {
             adminHome();
         }
         else {
-            System.out.println("Invalid credentials. Please try again");
+            userInterface.displayError("Invalid credentials. Please try again");
             login();
         }
         //customerHome();
@@ -183,7 +174,7 @@ public class PES {
             if( isValidInteger(choice)) {
                 switch (Integer.parseInt(choice)) {
                     case 1:
-                        listOfHalls.getAllHalls(listOfHalls);
+                        userInterface.displayAllHalls(listOfHalls.getHallList());
                         userInterface.promptInputMessage("Please select a hall by the index number");
 
                         System.out.println();
@@ -191,10 +182,10 @@ public class PES {
                         if (isValidInteger(input)) {
                             int hallIndex = Integer.parseInt(input);
                             if(hallIndex < 1 || hallIndex > listOfHalls.getHallList().size() ){
-                                System.out.println("Invalid choice. Returning to home");
+                                userInterface.displayError("Invalid choice. Returning to home");
                             }
                             else {
-                                listOfHalls.displayHallDetails(hallIndex - 1);
+                                userInterface.display(listOfHalls.getHallDetails(hallIndex - 1));
                                 userInterface.promptInputMessage("Would you like to request a quotation for this hall: Y/N");
                                 input = scanner.next();
                                 if (input.equalsIgnoreCase("Y"))
@@ -202,14 +193,14 @@ public class PES {
                                 else if (input.equalsIgnoreCase( "N")) {
                                 }
                                 else {
-                                    System.out.println("Invalid choice. Considering it as No.");
+                                    userInterface.displayError("Invalid choice. Considering it as No.");
                                     continue;
                                 }
                             }
                         }
                         else
                         {
-                            System.out.println("Invalid Input. Going to home");
+                            userInterface.displayError("Invalid Input. Going to home");
                         }
                         break;
 
@@ -233,9 +224,10 @@ public class PES {
                         //[Bookings]
                         BookingList completedBookingsByUser = new BookingList();
                         completedBookingsByUser.setBookingList(listOfBookings.getAllCompletedBookingsByUser(loggedInUser));
+                        userInterface.displayAllBookings(completedBookingsByUser.getBookingList());
                         if(completedBookingsByUser.getBookingList().isEmpty())
                         {
-                            System.out.println("There are no bookings. Going to Home");
+                            userInterface.displayError("There are no bookings. Going to Home");
                             continue;
                         }
                         userInterface.promptInputMessage("Please select a booking");
@@ -253,20 +245,20 @@ public class PES {
                                     writeAReview(completedBookingsByUser, bookingIndex);
                                 }
                                 else if(input.equalsIgnoreCase("N")){
-                                    System.out.println("You chose no. Going to home menu");
+                                    userInterface.displayError("You chose no. Going to home menu");
                                 }
                                 else {
-                                    System.out.println("Invalid choice. Considering it as No.");
+                                    userInterface.displayError("Invalid choice. Considering it as No.");
 
                                 }
                             }
                             else{
-                                System.out.println("Invalid choice. Returning to home");
+                                userInterface.displayError("Invalid choice. Returning to home");
                             }
                         }
                         else
                         {
-                            System.out.println("Invalid Input. Showing Customer Home menu");
+                            userInterface.displayError("Invalid Input. Showing Customer Home menu");
                         }
                         break;
 
@@ -284,14 +276,14 @@ public class PES {
                         createBooking();
                         break;
                     case 5:
-                        System.out.println("Loggin out...");
-                        System.out.println("Logged out");
+                        userInterface.displayError("Loggin out...");
+                        userInterface.displayError("Logged out");
                         flag = false;
                         System.exit(0);
                         break;
 
                     default:
-                        System.out.println("Invalid choice. Please try again");
+                        userInterface.displayError("Invalid choice. Please try again");
 
                 }
             }
@@ -301,26 +293,27 @@ public class PES {
     public void writeAReview(BookingList completedBookings, int bookingIndex){
         int rating = 0;
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
+        String input = "";
         boolean flag = true;
         while(flag) {
             userInterface.promptInputMessage("Provide a rating between 0 and 5 (integer only)");
+            input = scanner.next();
             if (isValidInteger(input)) {
                 rating = Integer.parseInt(input);
                 if (rating < 0 || rating > 5) {
-                    System.out.println("Invalid rating. Please try again");
+                    userInterface.displayError("Invalid rating. Please try again");
                 } else {
                     ;
                 }
             } else {
-                System.out.println("Invalid input please try again");
+                userInterface.displayError("Invalid input please try again");
                 writeAReview(completedBookings, bookingIndex);
             }
             userInterface.promptInputMessage("Enter the description for the review");
             scanner.nextLine();
             String description = scanner.nextLine();
             if (!isValidDescription(input)) {
-                System.out.println("Invalid input please try again");
+                userInterface.displayError("Invalid input please try again");
             } else {
                 ;
             }
@@ -333,15 +326,15 @@ public class PES {
             input = scanner.next();
             if (input.equalsIgnoreCase("Y")) {
                 if (completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomerByUserName(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())) {
-                    System.out.println("Review successful");
+                    userInterface.displayMessage("Review successful");
                 } else {
-                    System.out.println("This booking has already been reviewed.");
+                    userInterface.displayMessage("This booking has already been reviewed.");
                 }
             } else if (input.equalsIgnoreCase("N")) {
-                System.out.println("You chose no. Going to home menu");
+                userInterface.displayMessage("You chose no. Going to home menu");
                 flag = false;
             } else {
-                System.out.println("Invalid choice. Considering it as No. Going to home");
+                userInterface.displayError("Invalid choice. Considering it as No. Going to home");
                 flag = false;
             }
         }
@@ -352,9 +345,9 @@ public class PES {
         Scanner scanner = new Scanner(System.in);
         QuotationList quotationsByUser = new QuotationList();
         quotationsByUser.setQuotationList(listOfQuotations.getQuotationsByUsername(loggedInUser));
-        quotationsByUser.getAllQuotations();
+        userInterface.displayAllQuotations(quotationsByUser.getQuotationList());
         if(quotationsByUser.getQuotationList().isEmpty()){
-            System.out.println("No quotaions have been requested. Going to home menu");
+            userInterface.displayMessage("No quotaions have been requested. Going to home menu");
             return;
         }
         System.out.println();
@@ -365,18 +358,18 @@ public class PES {
             int quotationIndex= Integer.parseInt(input) - 1;
             if(quotationIndex >= 0 && quotationIndex < quotationsByUser.getQuotationList().size()) {
                 if (listOfBookings.isBookingExistsForQuote(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteId())) {
-                    System.out.println("A booking has already been made for this quotation.");
+                    userInterface.displayError("A booking has already been made for this quotation.");
                     return;
                 }
                 else {
-                    quotationsByUser.displayQuotaionDetails(quotationIndex);
+                    userInterface.display(quotationsByUser.getQuotationDetails(quotationIndex));
                     userInterface.promptInputMessage("Would you like to continue with the booking?: Y/N");
                     input = scanner.next();
                     if (input.equalsIgnoreCase("Y")) {
                         userInterface.promptInputMessage("Would you like to proceed with the payment?: Y/N");
                         input = scanner.next();
                         if (input.equalsIgnoreCase("Y")) {
-                            System.out.println("Proceeding to payment site");
+                            userInterface.displayMessage("Proceeding to payment site");
                             boolean flag = listOfBookings.addBooking(quotationsByUser.getQuotationDetails(quotationIndex), true);
                             if (flag) {
                                 String[] timeslots = new String[]{"Morning", "Afternoon", "Evening"};
@@ -397,8 +390,8 @@ public class PES {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("Payment received");
-                            System.out.println("Hall has been booked");
+                            userInterface.displayMessage("Payment received");
+                            userInterface.displayMessage("Hall has been booked");
                             System.out.println();
                         }
                     }
@@ -407,11 +400,11 @@ public class PES {
             }
             else
             {
-                System.out.println("Invalid choice. Returning to home");
+                userInterface.displayError("Invalid choice. Returning to home");
             }
         }
         else{
-            System.out.println("Invalid input. Please try again");
+            userInterface.displayError("Invalid input. Please try again");
             createBooking();
         }
     }
@@ -634,10 +627,7 @@ public class PES {
                 int serialNo = Integer.parseInt(choice);
                 if(serialNo > 0 && serialNo <= listOfHalls.getHallDetails(hallIndex).getAvailability().size())
                 {
-                    System.out.println("Choose the time slot.");
-                    System.out.println("(1) Morning");
-                    System.out.println("(2) Afternoon");
-                    System.out.println("(3) Evening");
+                    userInterface.displayMessage("Choose the time slot.\n(1) Morning\n(2) Afternoon\n(3) Evening");
                     userInterface.promptInputMessage("Enter the index number to choose date for booking");
                     String timeInput = scanner.next();
                     if(isValidInteger(timeInput))
@@ -649,40 +639,40 @@ public class PES {
                             {
                                 quoteDate.setTime(parseDate("07/09/2019").getTime() + ((serialNo - 1) * 86400000));
 
-                                System.out.println( "Chosen slot: " + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
+                                userInterface.displayMessage("Chosen slot: " + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
                                 userInterface.promptInputMessage("Proceed with this date time combination? Y/N");
                                 choice = scanner.next();
                                 if(choice.equalsIgnoreCase("Y")) {
-                                    System.out.println("Setting chosen combination");
+                                    userInterface.displayError("Setting chosen combination");
                                     flag = false;
                                 }
                                 else if(!choice.equalsIgnoreCase("N")){
-                                    System.out.println("Invalid input. Setting choice as no. ");
+                                    userInterface.displayError("Invalid input. Setting choice as no. ");
                                 }
                             }
                             else
                             {
-                                System.out.println("Slot has already been booked. Please choose another slot");
+                                userInterface.displayError("Slot has already been booked. Please choose another slot");
                             }
                         }
                         else
                         {
-                            System.out.println("Invalid time slot chosen. Please try again");
+                            userInterface.displayError("Invalid time slot chosen. Please try again");
                         }
                     }
                     else
                     {
-                        System.out.println("Invalid input type entered. Please try again");
+                        userInterface.displayError("Invalid input type entered. Please try again");
                     }
                 }
                 else
                 {
-                    System.out.println("Invalid date chosen. Please choose a date from the dates displayed by entering the respective serialNo.");
+                    userInterface.displayError("Invalid date chosen. Please choose a date from the dates displayed by entering the respective serialNo.");
                 }
             }
             else
             {
-                System.out.println("Invalid input type entered. Please try again");
+                userInterface.displayError("Invalid input type entered. Please try again");
             }
 
         }
@@ -700,11 +690,11 @@ public class PES {
                     expectedPrice = capacity * listOfHalls.getHallDetails(hallIndex).getPricePerPerson();
                 }
                 else{
-                    System.out.println("Number of people attending the event is not correct. Please try again");
+                    userInterface.displayError("Number of people attending the event is not correct. Please try again");
                 }
             }
             else{
-                System.out.println("Invalid input type entered. Please try again");
+                userInterface.displayError("Invalid input type entered. Please try again");
             }
         }
 
@@ -721,16 +711,12 @@ public class PES {
         }
         else
         {
-            System.out.println("Invalid choice. Considering it as No.");
+            userInterface.displayError("Invalid choice. Considering it as No.");
             cateringOptions = false;
         }
 
         System.out.println();
-        System.out.println("Event Types");
-        System.out.println("(1) Birthday");
-        System.out.println("(2) Wedding ceremony");
-        System.out.println("(3) Wedding reception");
-        System.out.println("(4) Anniversary");
+        userInterface.displayMessage("Event Types\n(1) Birthday\n(2) Wedding ceremony\n(3) Wedding reception\n(4) Anniversary");
         userInterface.promptInputMessage("Enter the index number to chose the event type.");
         flag = true;
         while(flag) {
@@ -754,12 +740,12 @@ public class PES {
                         flag = false;
                         break;
                     default:
-                        System.out.println("Please select from the above 4 options");
+                        userInterface.displayError("Please select from the above 4 options");
                 }
             }
             else
             {
-                System.out.println("Invalid input. Please give a valid input.");
+                userInterface.displayError("Invalid input. Please give a valid input.");
             }
         }
 
@@ -772,50 +758,49 @@ public class PES {
             while (flag) {
                 discount = scanner.next();
                 if (discount.equalsIgnoreCase("prime")) {
-                    System.out.println("Discount code applied");
-                    System.out.println("Disount: " + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%\n");
+                    userInterface.displayMessage("Discount code applied\nDisount: " + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%\n");
                     expectedPrice = expectedPrice * (100.0 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100;
                     flag = false;
                 } else {
-                    System.out.println("Invalid discount keyword. Please try again");
+                    userInterface.displayError("Invalid discount keyword. Please try again");
                 }
             }
         }
         else if (input.equalsIgnoreCase("N"))
         {
-            System.out.println("You chose not to provide discount code");
+            userInterface.displayMessage("You chose not to provide discount code");
         }
         else
         {
-            System.out.println("Invalid choice. Considering it as No.");
+            userInterface.displayError("Invalid choice. Considering it as No.");
         }
 
-        System.out.println("Please review the details before proceeding to next step");
-        System.out.println("Hall name: \t\t\t\t"+ listOfHalls.getHallDetails(hallIndex).getName());
-        System.out.println("Date and time: \t\t\t\t" + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
-        System.out.println("Number of people: \t\t\t"+ capacity);
-        System.out.println("Event: \t\t\t\t\t" + purpose);
+        userInterface.displayMessage("Please review the details before proceeding to next step");
+        userInterface.displayMessage("Hall name: \t\t\t\t"+ listOfHalls.getHallDetails(hallIndex).getName());
+        userInterface.displayMessage("Date and time: \t\t\t\t" + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
+        userInterface.displayMessage("Number of people: \t\t\t"+ capacity);
+        userInterface.displayMessage("Event: \t\t\t\t\t" + purpose);
         if (cateringOptions){
-            System.out.println("Catering Options:\t\t\t" + "Yes");
+            userInterface.displayMessage("Catering Options:\t\t\t" + "Yes");
         }else {
-            System.out.println("Catering Options:\t\t\t" + "No");
+            userInterface.displayMessage("Catering Options:\t\t\t" + "No");
         }        if(!discount.equalsIgnoreCase("none"))
-            System.out.println("Discount: \t\t\t\t" + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%");
-        System.out.println("Expected price to be paid: \t\t$" + expectedPrice);
+            userInterface.displayMessage("Discount: \t\t\t\t" + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%");
+        userInterface.displayMessage("Expected price to be paid: \t\t$" + expectedPrice);
         System.out.println();
-        System.out.println("Proceed with above details? Y/N");
+        userInterface.promptInputMessage("Proceed with above details? Y/N");
         input = scanner.next();
         if(input.equalsIgnoreCase("Y")) {
             //send the request
-            System.out.println("Your request has been sent! :D");
+            userInterface.displayMessage("Your quotation request has been sent!");
             listOfQuotations.createQuotation(listOfQuotations.getQuotationList().size() + 1, capacity, true, expectedPrice, quoteDate, timeslots[timeSlot -1], listOfHalls.getHallDetails(hallIndex).getDiscount(), cateringOptions, listOfHalls.getHallDetails(hallIndex), listOfCustomers.getCustomerByUserName(loggedInUser));
             customerHome();
         }
         else{
-            System.out.println("Resetting details.");
+            userInterface.displayMessage("Resetting details.");
             System.out.println();
             System.out.println();
-            listOfHalls.displayHallDetails(hallIndex);
+            userInterface.display(listOfHalls.getHallDetails(hallIndex));
             requestQuote(hallIndex);
         }
     }
@@ -832,7 +817,7 @@ public class PES {
         }
         catch (Exception e)
         {
-            System.out.println("Unknown exception occurred");
+            userInterface.displayError("Unknown exception occurred");
         }
         return  flag;
 
@@ -856,12 +841,12 @@ public class PES {
         }
         catch ( ParseException e)
         {
-            System.out.println("Invalid Date format. Please try again");
+            userInterface.displayError("Invalid Date format. Please try again");
             date = null;
         }
         catch (Exception e)
         {
-            System.out.println("Unknown exception occurred");
+            userInterface.displayError("Unknown exception occurred");
             date = null;
         }
         return  date;
