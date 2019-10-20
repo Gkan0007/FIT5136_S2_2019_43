@@ -48,7 +48,8 @@ public class HallList {
         System.out.println("Hall Area:\t\t\t" + hall.getHallArea() + "sqft");
         System.out.println("Address:\t\t\t" + hall.getAddress());
         System.out.println("Price per person:\t$" + hall.getPricePerPerson() );
-        System.out.println("Average Rating: \t\t" + hall.getAverageRating());
+        if(hall.getAverageRating() != -1.0)
+            System.out.println("Average Rating: \t\t" + hall.getAverageRating());
         System.out.println();
         System.out.println("Availability");
         System.out.println("Sno\tDate\t\t\t Morning\t Afternoon\t  Evening\t");
@@ -93,7 +94,8 @@ public class HallList {
             System.out.println( ("(") + i++ + ")" + "\tHall Name:\t\t\t" + hall.getName());
             System.out.println("\tTotal Capacity: \t" + hall.getCapacity());
             System.out.println("\tPrice per Person: \t" + hall.getPricePerPerson());
-            System.out.println("\tAverage Rating: \t" + getAverageRating(hall));
+            if(hall.getAverageRating() != -1.0)
+                System.out.println("\tAverage Rating: \t" + getAverageRating(hall));
             System.out.println();
         }
     }
@@ -102,7 +104,4 @@ public class HallList {
         return hall.getAverageRating();
     }
 
-    public void addInitialReviews(Customer customer, int hallId, int bookingId){
-        hallList.get(hallId).setInitialReviews(customer,bookingId);
-    }
 }

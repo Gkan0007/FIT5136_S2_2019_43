@@ -16,8 +16,8 @@ public class OwnerList {
         this.ownerList = ownerList;
     }
 
-    public boolean addOwner(Owner owner){
-        ownerList.add(owner);
+    public boolean addOwner(String userName, String password, String name, boolean status, int id){
+        ownerList.add(new Owner(userName, password, name, status, id));
         return true;
 
     }

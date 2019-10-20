@@ -6,15 +6,20 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class QuotationList {
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    public QuotationList() {
-        quotationList = new ArrayList<>();
-    }
+
+
 
     private ArrayList<Quotation> quotationList;
 
+    public QuotationList() {
+        quotationList = new ArrayList<>();
+    }
     public ArrayList<Quotation> getQuotationList() {
         return quotationList;
+    }
+
+    public void setQuotationList(ArrayList<Quotation> quotationList) {
+        this.quotationList = quotationList;
     }
 
     public boolean createQuotation(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, boolean cateringOptions, Hall hall, Customer customer){
@@ -26,6 +31,7 @@ public class QuotationList {
     }
 
     public void displayQuotaionDetails(int id){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Quotation quotation = quotationList.get(id);
         System.out.println();
         System.out.println("Quotation Date:\t\t\t\t" + dateFormat.format(quotation.getQuoteDate()));
@@ -52,6 +58,7 @@ public class QuotationList {
         return false;
     }
     public void getAllQuotations(){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         int i = 1;
         for (Quotation quotation : quotationList){
             System.out.println("(" + i++ + ")" +"\tHall Name:\t\t\t" + quotation.getHall().getName());
@@ -64,6 +71,15 @@ public class QuotationList {
             }
             System.out.println();
         }
+    }
+
+    public ArrayList<Quotation> getQuotationsByUsername(String userName){
+        ArrayList<Quotation> sortedQuotations = new ArrayList<>();
+        for(Quotation quotation: quotationList){
+            if(quotation.getCustomer().getUserName().equals(userName))
+                sortedQuotations.add(quotation);
+        }
+        return sortedQuotations;
     }
 
 

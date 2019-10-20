@@ -32,18 +32,6 @@ public class Hall {
         for(int i = 0; i < 12; i++)
         {
             array = new Boolean[]{true, true, true};
-            if(i == 3)
-            {
-                array = new Boolean[]{true, false, true};
-            }
-            if(i == 7)
-            {
-                array = new Boolean[]{true, true, false};
-            }
-            if(i == 11)
-            {
-                array = new Boolean[]{false, true, true};
-            }
             availability.add(array);
         }
 
@@ -133,7 +121,7 @@ public class Hall {
     public double getAverageRating(){
         double avgRating = 0.0;
         if(getReviews().size() == 0)
-            ;
+            avgRating = -1.0;
         else{
             for (Review review : getReviews()){
                 avgRating += review.getRating();
@@ -143,12 +131,16 @@ public class Hall {
         return avgRating;
     }
 
-    public void setInitialReviews(Customer customer, int bookingId){
-        Review review = new Review(4, "One of the best", customer, bookingId);
+
+    public boolean addReview(int rating, String description, Customer customer, int bookingId){
+        for(Review review: reviews)
+        {
+            if(review.getBookingId() == bookingId) {
+                return false;
+            }
+        }
+        Review review = new Review(rating, description, customer, bookingId);
         reviews.add(review);
-        review = new Review(5, "Good service", customer, bookingId);
-        reviews.add(review);
-        review = new Review(3, "Excellent", customer, bookingId);
-        reviews.add(review);
+        return true;
     }
 }

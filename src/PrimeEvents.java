@@ -1,3 +1,4 @@
+import javax.sound.midi.Soundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,17 +15,19 @@ public class PrimeEvents {
     private Admin admin;
     private HallList listOfHalls;
     private BookingList listOfBookings;
+    private UserInterface userInterface;
 
 
     PrimeEvents()
     {
-        loggedInUser = "";
+        loggedInUser = " ";
         listOfCustomers = new CustomerList();
         listOfOwners = new OwnerList();
         admin = new Admin();
         listOfHalls = new HallList();
         listOfQuotations = new QuotationList();
         listOfBookings = new BookingList();
+        userInterface = new UserInterface();
         init();
 
         System.out.println("  **************************************************** ");
@@ -36,25 +39,32 @@ public class PrimeEvents {
     }
 
     public void init(){
-        try {
-            listOfOwners.addOwner(new Owner("user1", "password", "User 2", true, 1));
-            listOfCustomers.addCustomer(new Customer(" ", " ", "User 2", true, true, true, 1));
-            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
-            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
-            listOfQuotations.createQuotation(1,100,true,2000.0, parseDate("09/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
-            listOfOwners.addOwner(new Owner("owner1", "password", "Owner", true, 1));
-            listOfCustomers.addCustomer(new Customer(" ", " ", "User 1", true, true, true, 1));
-            listOfCustomers.addCustomer(new Customer("cust2", "password", "Customer 2", true, true, false, 1));
+        listOfOwners.addOwner("owner1", "password", "Owner", true, 1);
+        listOfCustomers.addCustomer(new Customer("cust1", "password", "Customer 1", true, false, false, 1));
+        listOfCustomers.addCustomer(new Customer("cust2", "password", "Customer 2", true, true, false, 1));
+        listOfCustomers.addCustomer(new Customer("cust3", "password", "Customer 3", true, true, false, 1));
+        listOfCustomers.addCustomer(new Customer("cust4", "password", "Customer 4", true, true, false, 1));
 
-            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 500, 15, "address", 3000.0, 40);
-            listOfHalls.addInitialReviews(listOfCustomers.getCustomerByUserName(" ") ,listOfHalls.getHallList().size() - 1, 0);
-            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 700, 20, "address", 3000.0, 50);
-            listOfQuotations.createQuotation(1,100,true,2000.0,parseDate("09/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
-        }
-        catch (Exception e)
-        {
-            System.out.println("An error occurred. Error: " + e);
-        }
+        listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 500, 15, "address", 3000.0, 40);
+        listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 700, 20, "address", 3000.0, 50);
+        listOfQuotations.createQuotation(1,100,true,2000.0,parseDate("10/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer("cust2"));
+        listOfQuotations.createQuotation(2,200,true,4000.0,parseDate("14/09/2019"),"Morning",20.0,false,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer("cust3"));
+        listOfQuotations.createQuotation(3,300,true,26000.0,parseDate("18/09/2019"),"Afternoon",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer("cust4"));
+
+        listOfBookings.addBooking(listOfQuotations.getQuotationDetails(0), true);
+        listOfBookings.addBooking(listOfQuotations.getQuotationDetails(1), true);
+        listOfBookings.addBooking(listOfQuotations.getQuotationDetails(2), true);
+        listOfBookings.getBookingList().get(0).getHall().addReview(5, "Excellent", listOfCustomers.getCustomerByUserName("cust2"), 1);
+        listOfBookings.getBookingList().get(1).getHall().addReview(4, "One of the best", listOfCustomers.getCustomerByUserName("cust3"), 2);
+        listOfBookings.getBookingList().get(2).getHall().addReview(3, "Good service", listOfCustomers.getCustomerByUserName("cust4"), 3);
+
+        ArrayList<Boolean[]> availability = new ArrayList<>();
+        availability = listOfHalls.getHallDetails(1).getAvailability();
+        availability.get(4)[1] = false;
+        availability.get(11)[0] = false;
+        availability.get(8)[2] = false;
+        listOfHalls.getHallDetails(1).setAvailability(availability);
+
 
     }
 
@@ -94,16 +104,16 @@ public class PrimeEvents {
         String password = scanner.nextLine();
         //check the password and user name
         if(listOfCustomers.isValidUser(name,password)) {
-            customerHome();
             loggedInUser = name;
+            customerHome();
         }
         else if (listOfOwners.isValidUser(name,password)){
-            ownerHome();
             loggedInUser = name;
+            ownerHome();
         }
         else if (admin.isValidUser(name,password)){
+            loggedInUser = name;
             adminHome();
-           loggedInUser = name;
         }
         else {
             System.out.println("Invalid credentials. Please try again");
@@ -167,12 +177,10 @@ public class PrimeEvents {
         boolean flag = true;
         while(flag) {
             System.out.println("(1) View halls and request a quotation");
-            System.out.println("(2) View bookings");
-            System.out.println("(3) View my profile");
-            System.out.println("(4) Write a review");
-            System.out.println("(5) Manage bookings");
-            System.out.println("(6) View quotations");
-            System.out.println("(7) Logout");
+            System.out.println("(2) Write a review");
+            System.out.println("(3) Manage bookings");
+            System.out.println("(4) View quotations");
+            System.out.println("(5) Logout");
             System.out.println("Please select an option from the menu");
             String choice = scanner.next();
             if( isValidInteger(choice)) {
@@ -183,97 +191,102 @@ public class PrimeEvents {
                         System.out.println();
                         String input = scanner.next();
                         if (isValidInteger(input)) {
-                            int hallIndex = Integer.parseInt(input) - 1;
-                            listOfHalls.displayHallDetails(hallIndex);
-                            System.out.println("Would you like to request a quotation for this hall: Y/N");
-                            input = scanner.next();
-                            if(input.equalsIgnoreCase("Y"))
-                                requestQuote(hallIndex);
-                            else if(input.equalsIgnoreCase("N")){
+                            int hallIndex = Integer.parseInt(input);
+                            if(hallIndex < 1 || hallIndex > listOfHalls.getHallList().size() ){
+                                System.out.println("Invalid choice. Returning to home");
                             }
-
                             else {
-                                System.out.println("Invalid choice. Considering it as No.");
-                                continue;
+                                listOfHalls.displayHallDetails(hallIndex - 1);
+                                System.out.println("Would you like to request a quotation for this hall: Y/N");
+                                input = scanner.next();
+                                if (input.equalsIgnoreCase("Y"))
+                                    requestQuote(hallIndex - 1);
+                                else if (input.equalsIgnoreCase( "N")) {
+                                }
+                                else {
+                                    System.out.println("Invalid choice. Considering it as No.");
+                                    continue;
+                                }
                             }
                         }
+                        else
+                        {
+                            System.out.println("Invalid Input. Going to home");
+                        }
                         break;
-                    case 2:
-                        System.out.println("Please select a booking");
-                        //[Bookings]
-                        //System.out.println("(1) Name: 'Library'");
-                        System.out.println();
+
+//                    case 2:
+//                        System.out.println("Please select a booking");
+//                        //[Bookings]
+//                        //System.out.println("(1) Name: 'Library'");
+//                        System.out.println();
 //                        int booking = scanner.nextInt();
 //                        if (booking == 1) {
 //                            bookingDetail();
 //                        }
-                        customerHome();
-                        break;
+//                        customerHome();
+//                        break;
+//
+//                    case 3:
+//                        profile();
+//                        break;
 
-                    case 3:
-                        profile();
-                        break;
-
-                    case 4:
-                        System.out.println("Please select a booking");
+                    case 2:
                         //[Bookings]
                         BookingList completedBookingsByUser = new BookingList();
-                        completedBookingsByUser.setBookingList(listOfBookings.getAllCompletedBookingsByUser(" "));
+                        completedBookingsByUser.setBookingList(listOfBookings.getAllCompletedBookingsByUser(loggedInUser));
+                        if(completedBookingsByUser.getBookingList().isEmpty())
+                        {
+                            System.out.println("There are no bookings. Going to Home");
+                            continue;
+                        }
+                        System.out.println("Please select a booking");
+
                         System.out.println();
                         input = scanner.next();
                         if (isValidInteger(input)) {
                             int bookingIndex = Integer.parseInt(input) - 1;
-                            System.out.println("Would you like to leave a review? Y/N");
-                            input = scanner.next();
-                            if(input.equalsIgnoreCase("Y"))
+                            if(bookingIndex >= 0 && bookingIndex < completedBookingsByUser.getBookingList().size() )
                             {
-                                System.out.println("Please write your review about the booking");
-                            }
-                            else if(input.equalsIgnoreCase("N")){
-                                System.out.println("You chose no. Going to home menu");
-                            }
-                            else {
-                                System.out.println("Invalid choice. Considering it as No.");
+                                System.out.println("Would you like to leave a review? Y/N");
+                                input = scanner.next();
+                                if(input.equalsIgnoreCase("Y"))
+                                {
+                                    writeAReview(completedBookingsByUser, bookingIndex);
+                                }
+                                else if(input.equalsIgnoreCase("N")){
+                                    System.out.println("You chose no. Going to home menu");
+                                }
+                                else {
+                                    System.out.println("Invalid choice. Considering it as No.");
 
+                                }
                             }
-                            System.out.println("Your review has been post!");
-
+                            else{
+                                System.out.println("Invalid choice. Returning to home");
+                            }
                         }
                         else
                         {
                             System.out.println("Invalid Input. Showing Customer Home menu");
                         }
-//                        int booking2 = scanner.nextInt();
-//                        switch (booking2) {
-//                            case 1:
-//                                System.out.println("Please write your review about the booking");
-//                                String bookReview = scanner.next();
-//                                System.out.println("Your review has been post!");
-//                                customerHome();
-//                        }
-
-
                         break;
 
-                    case 5:
-                        System.out.println("Please select a booking to cancel");
-                        //[Bookings]
-                        System.out.println("(1) Name: 'Library'");
-                        System.out.println("If you want to change the date, please contact the admin.");
+                    case 3:
+                        listOfBookings.getBookingList();
+                        System.out.println("If you want to change the date or cancel, please contact the admin.");
                         System.out.println();
-                        int booking3 = scanner.nextInt();
-                        switch (booking3) {
-                            case 1:
-                                cancel();
-                        }
+//                        int booking3 = scanner.nextInt();
+//                        switch (booking3) {
+//                            case 1:
+//                                cancel();
+//                        }
                         break;
 
-                    case 6:
-                        //[Quotations]
-                        //listOfQuotations.getAllQuotations(listOfQuotations);
+                    case 4:
                         createBooking();
                         break;
-                    case 7:
+                    case 5:
                         System.out.println("Loggin out...");
                         System.out.println("Logged out");
                         flag = false;
@@ -287,54 +300,122 @@ public class PrimeEvents {
         }
     }
 
+    public void writeAReview(BookingList completedBookings, int bookingIndex){
+        System.out.println("Provide a rating between 0 and 5");
+        int rating = 0;
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        if(isValidInteger(input)){
+            rating = Integer.parseInt(input);
+            if(rating < 0 || rating >5){
+                System.out.println("Invalid rating. Please try again");
+                writeAReview(completedBookings,bookingIndex);
+            }
+            else{
+                ;
+            }
+        }
+        else {
+            System.out.println("Invalid input please try again");
+            writeAReview(completedBookings,bookingIndex);
+        }
+        System.out.println("Enter the description for the review");
+        scanner.nextLine();
+        String description = scanner.nextLine();
+        if(!isValidDescription(input)){
+            System.out.println("Invalid input please try again");
+            writeAReview(completedBookings,bookingIndex);
+        }
+        else
+        {
+            ;
+        }
+
+        System.out.println("Review for hall: " + completedBookings.getBookingList().get(bookingIndex).getHall().getName());
+        System.out.println("Rating: " + rating);
+        System.out.println("Review description: " + description);
+        System.out.println();
+        System.out.println("Post this review to the hall? Y/N");
+        input = scanner.next();
+        if(input.equalsIgnoreCase("Y"))
+        {
+            if(completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomerByUserName(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())){
+                System.out.println("Review successful");
+            }
+            else{
+                System.out.println("This booking has already been reviewed.");
+            }
+        }
+        else if(input.equalsIgnoreCase("N")){
+            System.out.println("You chose no. Going to home menu");
+        }
+        else {
+            System.out.println("Invalid choice. Considering it as No.");
+
+        }
+
+    }
+
     public void createBooking(){
         Scanner scanner = new Scanner(System.in);
-        listOfQuotations.getAllQuotations();
+        QuotationList quotationsByUser = new QuotationList();
+        quotationsByUser.setQuotationList(listOfQuotations.getQuotationsByUsername(loggedInUser));
+        quotationsByUser.getAllQuotations();
+        if(quotationsByUser.getQuotationList().isEmpty()){
+            System.out.println("No quotaions have been requested. Going to home menu");
+            return;
+        }
         System.out.println();
         System.out.println("Please select a quotation by the index number");
         System.out.println();
         String input = scanner.next();
         if (isValidInteger(input)) {
             int quotationIndex= Integer.parseInt(input) - 1;
-            if(listOfBookings.isBookingExistsForQuote(listOfQuotations.getQuotationDetails(quotationIndex).getQuoteId())){
-                System.out.println("A booking has already been made for this quotation.");
-                return;
-            }
-            else {
-                listOfQuotations.displayQuotaionDetails(quotationIndex);
-                System.out.println("Would you like to continue with the booking?: Y/N");
-                input = scanner.next();
-                if (input.equalsIgnoreCase("Y")) {
-                    System.out.println("Would you like to proceed with the payment?: Y/N");
+            if(quotationIndex >= 0 && quotationIndex < quotationsByUser.getQuotationList().size()) {
+                if (listOfBookings.isBookingExistsForQuote(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteId())) {
+                    System.out.println("A booking has already been made for this quotation.");
+                    return;
+                }
+                else {
+                    quotationsByUser.displayQuotaionDetails(quotationIndex);
+                    System.out.println("Would you like to continue with the booking?: Y/N");
                     input = scanner.next();
                     if (input.equalsIgnoreCase("Y")) {
-                        System.out.println("Proceeding to payment site");
-                        boolean flag = listOfBookings.addBooking(listOfQuotations.getQuotationDetails(quotationIndex), true);
-                        if (flag) {
-                            String[] timeslots = new String[]{"Morning", "Afternoon", "Evening"};
-                            int timeSlot = 0;
-                            for (int i = 0; i < 3; i++) {
-                                if (listOfQuotations.getQuotationDetails(quotationIndex).getQuoteTime().equals(timeslots[i])) {
-                                    timeSlot = i;
+                        System.out.println("Would you like to proceed with the payment?: Y/N");
+                        input = scanner.next();
+                        if (input.equalsIgnoreCase("Y")) {
+                            System.out.println("Proceeding to payment site");
+                            boolean flag = listOfBookings.addBooking(quotationsByUser.getQuotationDetails(quotationIndex), true);
+                            if (flag) {
+                                String[] timeslots = new String[]{"Morning", "Afternoon", "Evening"};
+                                int timeSlot = 0;
+                                for (int i = 0; i < 3; i++) {
+                                    if (quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals(timeslots[i])) {
+                                        timeSlot = i;
+                                    }
                                 }
+                                Date firstDate = parseDate("07/09/2019");
+                                long dateDifference = (quotationsByUser.getQuotationDetails(quotationIndex).getQuoteDate().getTime() - firstDate.getTime()) / 86400000;
+                                ArrayList<Boolean[]> availability = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability();
+                                availability.get((int) dateDifference)[timeSlot] = false;
+                                quotationsByUser.getQuotationDetails(quotationIndex).getHall().setAvailability(availability);
                             }
-                            Date firstDate = parseDate("07/09/2019");
-                            long dateDifference = (listOfQuotations.getQuotationDetails(quotationIndex).getQuoteDate().getTime() - firstDate.getTime()) / 86400000;
-                            ArrayList<Boolean[]> availability = listOfQuotations.getQuotationDetails(quotationIndex).getHall().getAvailability();
-                            availability.get((int) dateDifference)[timeSlot] = false;
-                            listOfQuotations.getQuotationDetails(quotationIndex).getHall().setAvailability(availability);
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("Payment received");
+                            System.out.println("Hall has been booked");
+                            System.out.println();
                         }
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("Payment received");
-                        System.out.println("Hall has been booked");
-                        System.out.println();
                     }
+                    return;
                 }
-                return;
+            }
+            else
+            {
+                System.out.println("Invalid choice. Returning to home");
             }
         }
         else{
@@ -659,9 +740,9 @@ public class PrimeEvents {
         System.out.println("(3) Wedding reception");
         System.out.println("(4) Anniversary");
         System.out.println("Enter the index number to chose the event type.");
-        purpose = scanner.next();
         flag = true;
         while(flag) {
+            purpose = scanner.next();
             if (isValidInteger(purpose)) {
                 switch (Integer.parseInt(purpose)){
                     case 1:
@@ -682,8 +763,6 @@ public class PrimeEvents {
                         break;
                     default:
                         System.out.println("Please select from the above 4 options");
-                        purpose = scanner.next();
-
                 }
             }
             else
@@ -766,6 +845,15 @@ public class PrimeEvents {
         return  flag;
 
     }
+
+    public boolean isValidDescription(String description){
+        boolean flag = true;
+        if(description.length() > 2000 || description.isEmpty())
+            flag = false;
+        return flag;
+    }
+
+
 
     public Date parseDate(String input){
         Date date =  new Date();
