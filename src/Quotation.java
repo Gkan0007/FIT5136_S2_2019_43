@@ -12,7 +12,9 @@ public class Quotation {
     private boolean cateringOptions;
     private Hall hall;
     private Customer customer;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public Quotation(int quoteId, int capacity, boolean quoteStatus, double quoteTotalPrice, Date quoteDate, String quoteTime, double discount, boolean cateringOptions, Hall hall, Customer customer) {
         this.quoteId = quoteId;
         this.capacity = capacity;

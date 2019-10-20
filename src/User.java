@@ -3,7 +3,9 @@ public class User {
     private String password;
     private String name;
     private boolean accountStatus;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public User(String userName, String password, String name, boolean accountStatus) {
         this.userName = userName;
         this.password = password;

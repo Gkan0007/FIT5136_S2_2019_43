@@ -9,7 +9,9 @@ public class Admin extends User{
     }
 
     private int adminId;
-
+    /**
+     * Constructor is a method to initialize the attribute
+     */
     public Admin() {
         super("admin","admin", "Adminstrator", true);
         this.adminId = 1;
