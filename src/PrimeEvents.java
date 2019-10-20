@@ -70,7 +70,7 @@ public class PrimeEvents {
 
     public  void welcome() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("- Please any key to navigate to Login/Register view ...\n");
+        userInterface.promptInputMessage("- Please any key to navigate to Login/Register view ...\n");
         Scanner s = new Scanner(System.in);
         s.nextLine();
         System.out.println("1.Login");
@@ -98,9 +98,9 @@ public class PrimeEvents {
 
     private  void login() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter your username");
+        userInterface.promptInputMessage("Please enter your username");
         String name = scanner.nextLine();
-        System.out.println("Please enter your password");
+        userInterface.promptInputMessage("Please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
         if(listOfCustomers.isValidUser(name,password)) {
@@ -176,18 +176,16 @@ public class PrimeEvents {
         System.out.println("Home");
         boolean flag = true;
         while(flag) {
-            System.out.println("(1) View halls and request a quotation");
-            System.out.println("(2) Write a review");
-            System.out.println("(3) Manage bookings");
-            System.out.println("(4) View quotations");
-            System.out.println("(5) Logout");
-            System.out.println("Please select an option from the menu");
+            userInterface.displayMenu(listOfCustomers.getCustomerByUserName(loggedInUser));
+            System.out.println("");
+            userInterface.promptInputMessage("Please select an option from the menu");
             String choice = scanner.next();
             if( isValidInteger(choice)) {
                 switch (Integer.parseInt(choice)) {
                     case 1:
                         listOfHalls.getAllHalls(listOfHalls);
-                        System.out.println("Please select a hall by the index number");
+                        userInterface.promptInputMessage("Please select a hall by the index number");
+
                         System.out.println();
                         String input = scanner.next();
                         if (isValidInteger(input)) {
@@ -197,7 +195,7 @@ public class PrimeEvents {
                             }
                             else {
                                 listOfHalls.displayHallDetails(hallIndex - 1);
-                                System.out.println("Would you like to request a quotation for this hall: Y/N");
+                                userInterface.promptInputMessage("Would you like to request a quotation for this hall: Y/N");
                                 input = scanner.next();
                                 if (input.equalsIgnoreCase("Y"))
                                     requestQuote(hallIndex - 1);
@@ -240,7 +238,7 @@ public class PrimeEvents {
                             System.out.println("There are no bookings. Going to Home");
                             continue;
                         }
-                        System.out.println("Please select a booking");
+                        userInterface.promptInputMessage("Please select a booking");
 
                         System.out.println();
                         input = scanner.next();
@@ -248,7 +246,7 @@ public class PrimeEvents {
                             int bookingIndex = Integer.parseInt(input) - 1;
                             if(bookingIndex >= 0 && bookingIndex < completedBookingsByUser.getBookingList().size() )
                             {
-                                System.out.println("Would you like to leave a review? Y/N");
+                                userInterface.promptInputMessage("Would you like to leave a review? Y/N");
                                 input = scanner.next();
                                 if(input.equalsIgnoreCase("Y"))
                                 {
@@ -274,8 +272,7 @@ public class PrimeEvents {
 
                     case 3:
                         listOfBookings.getBookingList();
-                        System.out.println("If you want to change the date or cancel, please contact the admin.");
-                        System.out.println();
+                        userInterface.promptInputMessage("If you want to change the date or cancel, please contact the admin.");
 //                        int booking3 = scanner.nextInt();
 //                        switch (booking3) {
 //                            case 1:
@@ -290,6 +287,7 @@ public class PrimeEvents {
                         System.out.println("Loggin out...");
                         System.out.println("Logged out");
                         flag = false;
+                        System.exit(0);
                         break;
 
                     default:
@@ -301,58 +299,51 @@ public class PrimeEvents {
     }
 
     public void writeAReview(BookingList completedBookings, int bookingIndex){
-        System.out.println("Provide a rating between 0 and 5");
         int rating = 0;
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
-        if(isValidInteger(input)){
-            rating = Integer.parseInt(input);
-            if(rating < 0 || rating >5){
-                System.out.println("Invalid rating. Please try again");
-                writeAReview(completedBookings,bookingIndex);
+        boolean flag = true;
+        while(flag) {
+            userInterface.promptInputMessage("Provide a rating between 0 and 5 (integer only)");
+            if (isValidInteger(input)) {
+                rating = Integer.parseInt(input);
+                if (rating < 0 || rating > 5) {
+                    System.out.println("Invalid rating. Please try again");
+                } else {
+                    ;
+                }
+            } else {
+                System.out.println("Invalid input please try again");
+                writeAReview(completedBookings, bookingIndex);
             }
-            else{
+            userInterface.promptInputMessage("Enter the description for the review");
+            scanner.nextLine();
+            String description = scanner.nextLine();
+            if (!isValidDescription(input)) {
+                System.out.println("Invalid input please try again");
+            } else {
                 ;
             }
-        }
-        else {
-            System.out.println("Invalid input please try again");
-            writeAReview(completedBookings,bookingIndex);
-        }
-        System.out.println("Enter the description for the review");
-        scanner.nextLine();
-        String description = scanner.nextLine();
-        if(!isValidDescription(input)){
-            System.out.println("Invalid input please try again");
-            writeAReview(completedBookings,bookingIndex);
-        }
-        else
-        {
-            ;
-        }
 
-        System.out.println("Review for hall: " + completedBookings.getBookingList().get(bookingIndex).getHall().getName());
-        System.out.println("Rating: " + rating);
-        System.out.println("Review description: " + description);
-        System.out.println();
-        System.out.println("Post this review to the hall? Y/N");
-        input = scanner.next();
-        if(input.equalsIgnoreCase("Y"))
-        {
-            if(completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomerByUserName(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())){
-                System.out.println("Review successful");
+            userInterface.displayMessage("Review for hall: " + completedBookings.getBookingList().get(bookingIndex).getHall().getName());
+            userInterface.displayMessage("Rating: " + rating);
+            userInterface.displayMessage("Review description: " + description);
+            System.out.println();
+            userInterface.promptInputMessage("Post this review to the hall? Y/N");
+            input = scanner.next();
+            if (input.equalsIgnoreCase("Y")) {
+                if (completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomerByUserName(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())) {
+                    System.out.println("Review successful");
+                } else {
+                    System.out.println("This booking has already been reviewed.");
+                }
+            } else if (input.equalsIgnoreCase("N")) {
+                System.out.println("You chose no. Going to home menu");
+                flag = false;
+            } else {
+                System.out.println("Invalid choice. Considering it as No. Going to home");
+                flag = false;
             }
-            else{
-                System.out.println("This booking has already been reviewed.");
-            }
-        }
-        else if(input.equalsIgnoreCase("N")){
-            System.out.println("You chose no. Going to home menu");
-            return;
-        }
-        else {
-            System.out.println("Invalid choice. Considering it as No.");
-
         }
 
     }
@@ -367,7 +358,7 @@ public class PrimeEvents {
             return;
         }
         System.out.println();
-        System.out.println("Please select a quotation by the index number");
+        userInterface.promptInputMessage("Please select a quotation by the index number");
         System.out.println();
         String input = scanner.next();
         if (isValidInteger(input)) {
@@ -379,10 +370,10 @@ public class PrimeEvents {
                 }
                 else {
                     quotationsByUser.displayQuotaionDetails(quotationIndex);
-                    System.out.println("Would you like to continue with the booking?: Y/N");
+                    userInterface.promptInputMessage("Would you like to continue with the booking?: Y/N");
                     input = scanner.next();
                     if (input.equalsIgnoreCase("Y")) {
-                        System.out.println("Would you like to proceed with the payment?: Y/N");
+                        userInterface.promptInputMessage("Would you like to proceed with the payment?: Y/N");
                         input = scanner.next();
                         if (input.equalsIgnoreCase("Y")) {
                             System.out.println("Proceeding to payment site");
@@ -637,7 +628,7 @@ public class PrimeEvents {
         double expectedPrice = 0.0;
 
         while(flag){
-            System.out.println("Please enter the slot number for the chosen date");
+            userInterface.promptInputMessage("Please enter the slot number for the chosen date");
             String choice = scanner.next();
             if(isValidInteger(choice)){
                 int serialNo = Integer.parseInt(choice);
@@ -647,7 +638,7 @@ public class PrimeEvents {
                     System.out.println("(1) Morning");
                     System.out.println("(2) Afternoon");
                     System.out.println("(3) Evening");
-                    System.out.println("Enter the index number to choose date for booking");
+                    userInterface.promptInputMessage("Enter the index number to choose date for booking");
                     String timeInput = scanner.next();
                     if(isValidInteger(timeInput))
                     {
@@ -659,7 +650,7 @@ public class PrimeEvents {
                                 quoteDate.setTime(parseDate("07/09/2019").getTime() + ((serialNo - 1) * 86400000));
 
                                 System.out.println( "Chosen slot: " + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
-                                System.out.println("Proceed with this date time combination? Y/N");
+                                userInterface.promptInputMessage("Proceed with this date time combination? Y/N");
                                 choice = scanner.next();
                                 if(choice.equalsIgnoreCase("Y")) {
                                     System.out.println("Setting chosen combination");
@@ -698,7 +689,7 @@ public class PrimeEvents {
 
         System.out.println();
         flag = true;
-        System.out.println("Enter the number of people attending the event" );
+        userInterface.promptInputMessage("Enter the number of people attending the event" );
         while(flag)
         {
             input = scanner.next();
@@ -718,7 +709,7 @@ public class PrimeEvents {
         }
 
         System.out.println();
-        System.out.println("Would you like catering for the event? It is additional $20/person Y/N" );
+        userInterface.promptInputMessage("Would you like catering for the event? It is additional $20/person Y/N" );
         input = scanner.next();
         if(input.equalsIgnoreCase("Y")){
             cateringOptions = true;
@@ -740,7 +731,7 @@ public class PrimeEvents {
         System.out.println("(2) Wedding ceremony");
         System.out.println("(3) Wedding reception");
         System.out.println("(4) Anniversary");
-        System.out.println("Enter the index number to chose the event type.");
+        userInterface.promptInputMessage("Enter the index number to chose the event type.");
         flag = true;
         while(flag) {
             purpose = scanner.next();
@@ -773,10 +764,10 @@ public class PrimeEvents {
         }
 
         System.out.println();
-        System.out.println("Would you like to apply for discount? Y/N");
+        userInterface.promptInputMessage("Would you like to apply for discount? Y/N");
         input = scanner.next();
         if(input.equalsIgnoreCase("Y")){
-            System.out.println("Enter your discount keyword.");
+            userInterface.promptInputMessage("Enter your discount keyword.");
             flag = true;
             while (flag) {
                 discount = scanner.next();
