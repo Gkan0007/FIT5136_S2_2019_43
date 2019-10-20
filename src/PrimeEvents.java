@@ -180,8 +180,9 @@ public class PrimeEvents {
                             input = scanner.next();
                             if(input.equalsIgnoreCase("Y"))
                                 requestQuote(hallIndex);
-                            else if(!input.equalsIgnoreCase("N"))
-                                continue;
+                            else if(input.equalsIgnoreCase("N")){
+                            }
+
                             else {
                                 System.out.println("Invalid choice. Considering it as No.");
                                 continue;
@@ -518,6 +519,7 @@ public class PrimeEvents {
         boolean cateringOptions = false;
         String input = "";
         String[] timeslots = new String[]{"Morning" ,"Afternoon", "Evening"};
+        double expectedPrice = 0.0;
 
         while(flag){
             System.out.println("Please enter the slot number for the chosen date");
@@ -589,6 +591,7 @@ public class PrimeEvents {
                 capacity = Integer.parseInt(input);
                 if(capacity > 0 && capacity <= listOfHalls.getHallDetails(hallIndex).getCapacity()){
                     flag = false;
+                    expectedPrice = capacity * listOfHalls.getHallDetails(hallIndex).getPricePerPerson();
                 }
                 else{
                     System.out.println("Number of people attending the event is not correct. Please try again");
@@ -604,6 +607,7 @@ public class PrimeEvents {
         input = scanner.next();
         if(input.equalsIgnoreCase("Y")){
             cateringOptions = true;
+            expectedPrice += capacity * 20.0;
         }
         else if (input.equalsIgnoreCase("N"))
         {
@@ -666,6 +670,7 @@ public class PrimeEvents {
                 if (discount.equalsIgnoreCase("prime")) {
                     System.out.println("Discount code applied");
                     System.out.println("Disount: " + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%\n");
+                    expectedPrice = expectedPrice * (100.0 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100;
                     flag = false;
                 } else {
                     System.out.println("Invalid discount keyword. Please try again");
@@ -681,8 +686,6 @@ public class PrimeEvents {
             System.out.println("Invalid choice. Considering it as No.");
         }
 
-        double expectedPrice = (listOfHalls.getHallDetails(hallIndex).getPricePerPerson() * capacity ) * (100.0 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100;
-
         System.out.println("Please review the details before proceeding to next step");
         System.out.println("Hall name: \t\t\t\t"+ listOfHalls.getHallDetails(hallIndex).getName());
         System.out.println("Date and time: \t\t\t" + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
@@ -690,7 +693,6 @@ public class PrimeEvents {
         System.out.println("Event: \t\t\t\t\t" + purpose);
         if (cateringOptions){
             System.out.println("Catering Options:\t\t\t" + "Yes");
-            expectedPrice += (capacity * 20.0) * (100 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100 ;
         }else {
             System.out.println("Catering Options:\t\t\t" + "No");
         }        if(!discount.equalsIgnoreCase("none"))
