@@ -1,4 +1,5 @@
 
+import javax.sound.midi.Soundbank;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class HallList {
         System.out.println("Hall Area:\t\t\t" + hall.getHallArea() + "sqft");
         System.out.println("Address:\t\t\t" + hall.getAddress());
         System.out.println("Price per person:\t$" + hall.getPricePerPerson() );
+        System.out.println("Average Rating: \t\t" + hall.getAverageRating());
+        System.out.println();
         System.out.println("Availability");
         System.out.println("Sno\tDate\t\t\t Morning\t Afternoon\t  Evening\t");
         Date date = new Date();
@@ -74,6 +77,14 @@ public class HallList {
             System.out.println();
             date.setTime(date.getTime() + 86400000);
         }
+
+        System.out.println();
+        System.out.println("Reviews");
+        for( Review review: hallList.get(id).getReviews()){
+            System.out.println("\tUser: " + review.getCustomer().getName() + "\t\t\t\t\t Rating: "  + review.getRating());
+            System.out.println("\t" + review.getDescription());
+            System.out.println();
+        }
     }
 
     public void getAllHalls(HallList hallList){
@@ -89,5 +100,9 @@ public class HallList {
 
     public double getAverageRating(Hall hall){
         return hall.getAverageRating();
+    }
+
+    public void addInitialReviews(Customer customer, int hallId, int bookingId){
+        hallList.get(hallId).setInitialReviews(customer,bookingId);
     }
 }

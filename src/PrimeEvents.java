@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class PrimeEvents {
 
 
-    private UserList listOfUsers;
+    private String loggedInUser;
     private CustomerList listOfCustomers;
     private OwnerList listOfOwners;
     private QuotationList listOfQuotations;
@@ -18,7 +18,7 @@ public class PrimeEvents {
 
     PrimeEvents()
     {
-        listOfUsers = new UserList();
+        loggedInUser = "";
         listOfCustomers = new CustomerList();
         listOfOwners = new OwnerList();
         admin = new Admin();
@@ -42,6 +42,14 @@ public class PrimeEvents {
             listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
             listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
             listOfQuotations.createQuotation(1,100,true,2000.0, parseDate("09/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
+            listOfOwners.addOwner(new Owner("owner1", "password", "Owner", true, 1));
+            listOfCustomers.addCustomer(new Customer(" ", " ", "User 1", true, true, true, 1));
+            listOfCustomers.addCustomer(new Customer("cust2", "password", "Customer 2", true, true, false, 1));
+
+            listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 500, 15, "address", 3000.0, 40);
+            listOfHalls.addInitialReviews(listOfCustomers.getCustomerByUserName(" ") ,listOfHalls.getHallList().size() - 1, 0);
+            listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 700, 20, "address", 3000.0, 50);
+            listOfQuotations.createQuotation(1,100,true,2000.0,parseDate("09/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
         }
         catch (Exception e)
         {
@@ -79,19 +87,24 @@ public class PrimeEvents {
     }
 
     private  void login() {
-        listOfUsers = new UserList();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your username");
         String name = scanner.nextLine();
         System.out.println("Please enter your password");
         String password = scanner.nextLine();
         //check the password and user name
-        if(listOfCustomers.isValidUser(name,password))
+        if(listOfCustomers.isValidUser(name,password)) {
             customerHome();
-        else if (listOfOwners.isValidUser(name,password))
+            loggedInUser = name;
+        }
+        else if (listOfOwners.isValidUser(name,password)){
             ownerHome();
-        else if (admin.isValidUser(name,password))
+            loggedInUser = name;
+        }
+        else if (admin.isValidUser(name,password)){
             adminHome();
+           loggedInUser = name;
+        }
         else {
             System.out.println("Invalid credentials. Please try again");
             login();
@@ -724,7 +737,7 @@ public class PrimeEvents {
         if(input.equalsIgnoreCase("Y")) {
             //send the request
             System.out.println("Your request has been sent! :D");
-            listOfQuotations.createQuotation(listOfQuotations.getQuotationList().size() + 1, capacity, true, expectedPrice, quoteDate, timeslots[timeSlot -1], listOfHalls.getHallDetails(hallIndex).getDiscount(), cateringOptions, listOfHalls.getHallDetails(hallIndex), listOfCustomers.getCustomer(" "));
+            listOfQuotations.createQuotation(listOfQuotations.getQuotationList().size() + 1, capacity, true, expectedPrice, quoteDate, timeslots[timeSlot -1], listOfHalls.getHallDetails(hallIndex).getDiscount(), cateringOptions, listOfHalls.getHallDetails(hallIndex), listOfCustomers.getCustomerByUserName(loggedInUser));
             customerHome();
         }
         else{
