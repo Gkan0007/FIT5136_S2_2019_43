@@ -348,6 +348,7 @@ public class PrimeEvents {
         }
         else if(input.equalsIgnoreCase("N")){
             System.out.println("You chose no. Going to home menu");
+            return;
         }
         else {
             System.out.println("Invalid choice. Considering it as No.");
@@ -800,8 +801,8 @@ public class PrimeEvents {
 
         System.out.println("Please review the details before proceeding to next step");
         System.out.println("Hall name: \t\t\t\t"+ listOfHalls.getHallDetails(hallIndex).getName());
-        System.out.println("Date and time: \t\t\t" + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
-        System.out.println("Number of people: \t\t"+ capacity);
+        System.out.println("Date and time: \t\t\t\t" + new SimpleDateFormat("dd/MM/yyyy").format(quoteDate) + " " + timeslots[timeSlot-1]);
+        System.out.println("Number of people: \t\t\t"+ capacity);
         System.out.println("Event: \t\t\t\t\t" + purpose);
         if (cateringOptions){
             System.out.println("Catering Options:\t\t\t" + "Yes");
@@ -809,7 +810,7 @@ public class PrimeEvents {
             System.out.println("Catering Options:\t\t\t" + "No");
         }        if(!discount.equalsIgnoreCase("none"))
             System.out.println("Discount: \t\t\t\t" + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%");
-        System.out.println("Expected price to be paid: $" + expectedPrice);
+        System.out.println("Expected price to be paid: \t\t$" + expectedPrice);
         System.out.println();
         System.out.println("Proceed with above details? Y/N");
         input = scanner.next();

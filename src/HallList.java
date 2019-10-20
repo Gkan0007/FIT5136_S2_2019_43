@@ -42,12 +42,12 @@ public class HallList {
 
         System.out.println("Hall Name:\t\t\t" + hall.getName());
         System.out.println("Owner:\t\t\t\t" + hall.getOwner().getName());
-        System.out.println("Description:\t\t" + hall.getDescription());
+        System.out.println("Description:\t\t\t" + hall.getDescription());
         System.out.println("Capacity:\t\t\t" + hall.getCapacity() + " people");
         System.out.println("Discount:\t\t\t" + hall.getDiscount() + "%");
         System.out.println("Hall Area:\t\t\t" + hall.getHallArea() + "sqft");
         System.out.println("Address:\t\t\t" + hall.getAddress());
-        System.out.println("Price per person:\t$" + hall.getPricePerPerson() );
+        System.out.println("Price per person:\t\t$" + hall.getPricePerPerson() );
         if(hall.getAverageRating() != -1.0)
             System.out.println("Average Rating: \t\t" + hall.getAverageRating());
         System.out.println();
@@ -91,7 +91,7 @@ public class HallList {
     public void getAllHalls(HallList hallList){
         int i = 1;
         for (Hall hall : hallList.getHallList()){
-            System.out.println( ("(") + i++ + ")" + "\tHall Name:\t\t\t" + hall.getName());
+            System.out.println( ("(") + i++ + ")" + "\tHall Name:\t" + hall.getName());
             System.out.println("\tTotal Capacity: \t" + hall.getCapacity());
             System.out.println("\tPrice per Person: \t" + hall.getPricePerPerson());
             if(hall.getAverageRating() != -1.0)

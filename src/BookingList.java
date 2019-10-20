@@ -44,7 +44,7 @@ public class BookingList {
         for(Booking booking: bookingList){
             if(booking.getCustomer().getUserName().equals(userName)){
                 if (booking.isPaymentStatus() && booking.getBookingDate().before(today)){
-                    System.out.println("(" + sno++ + ")" +"\tHall name:\t\t\t" +booking.getHall().getName());
+                    System.out.println("(" + sno++ + ")" +"\tHall name:\t\t" +booking.getHall().getName());
                     System.out.println("\tBooking date:\t\t" +booking.getBookingDate());
                     System.out.println("\tBooking time:\t\t" +booking.getBookingTime());
                     completedBookings.add(booking);

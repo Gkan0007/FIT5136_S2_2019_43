@@ -38,14 +38,14 @@ public class QuotationList {
         System.out.println("Quotation Time:\t\t\t\t" + quotation.getQuoteTime());
         System.out.println("Number of people:\t\t\t" + quotation.getCapacity());
 
-        System.out.println("Quotation Total Price:\t\t" + quotation.getQuoteTotalPrice());
-        System.out.println("Discount:\t\t\t\t\t" + quotation.getDiscount() + "%");
+        System.out.println("Quotation Total Price:\t\t\t" + quotation.getQuoteTotalPrice());
+        System.out.println("Discount:\t\t\t\t" + quotation.getDiscount() + "%");
         if (quotation.isQuoteStatus()){
             System.out.println("Catering Options:\t\t\t" + "Yes");
         }else {
             System.out.println("Catering Options:\t\t\t" + "No");
         }
-        System.out.println("Hall Name:\t\t\t\t\t" + quotation.getHall().getName());
+        System.out.println("Hall Name:\t\t\t\t" + quotation.getHall().getName());
         if (quotation.isQuoteStatus()){
             System.out.println("Quotation Status:\t\t\t" + "Accepted");
         }else {
@@ -61,7 +61,7 @@ public class QuotationList {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         int i = 1;
         for (Quotation quotation : quotationList){
-            System.out.println("(" + i++ + ")" +"\tHall Name:\t\t\t" + quotation.getHall().getName());
+            System.out.println("(" + i++ + ")" +"\tHall Name:\t\t" + quotation.getHall().getName());
             System.out.println("\tQuotation Date:\t\t" + dateFormat.format(quotation.getQuoteDate()));
             System.out.println("\tQuotation Time:\t\t" + quotation.getQuoteTime());
             if (quotation.isQuoteStatus()){
