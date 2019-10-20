@@ -600,7 +600,7 @@ public class PrimeEvents {
         }
 
         System.out.println();
-        System.out.println("Would you like catering for the event? Y/N" );
+        System.out.println("Would you like catering for the event? It is additional $20/person Y/N" );
         input = scanner.next();
         if(input.equalsIgnoreCase("Y")){
             cateringOptions = true;
@@ -695,7 +695,7 @@ public class PrimeEvents {
             System.out.println("Catering Options:\t\t\t" + "No");
         }        if(!discount.equalsIgnoreCase("none"))
             System.out.println("Discount: \t\t\t\t" + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%");
-        System.out.println("Expected price (w/Discount): $" + expectedPrice);
+        System.out.println("Expected price to be paid: $" + expectedPrice);
         System.out.println();
         System.out.println("Proceed with above details? Y/N");
         input = scanner.next();
