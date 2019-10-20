@@ -182,9 +182,10 @@ public class PrimeEvents {
                                 requestQuote(hallIndex);
                             else if(!input.equalsIgnoreCase("N"))
                                 continue;
-                        } else {
-                            System.out.println("Invalid choice. Considering it as No.");
-                            continue;
+                            else {
+                                System.out.println("Invalid choice. Considering it as No.");
+                                continue;
+                            }
                         }
                         break;
                     case 2:
