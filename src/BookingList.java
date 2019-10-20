@@ -55,15 +55,11 @@ public class BookingList {
      * @param userName an String which is the customer's name
      */
     public ArrayList<Booking> getAllCompletedBookingsByUser(String userName){
-        int sno = 1;
         Date today = new Date();
         ArrayList<Booking> completedBookings = new ArrayList<>();
         for(Booking booking: bookingList){
             if(booking.getCustomer().getUserName().equals(userName)){
                 if (booking.isPaymentStatus() && booking.getBookingDate().before(today)){
-                    System.out.println("(" + sno++ + ")" +"\tHall name:\t\t" +booking.getHall().getName());
-                    System.out.println("\tBooking date:\t\t" +booking.getBookingDate());
-                    System.out.println("\tBooking time:\t\t" +booking.getBookingTime());
                     completedBookings.add(booking);
 
                 }
