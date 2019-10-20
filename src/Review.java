@@ -2,11 +2,13 @@ public class Review  {
     private int rating;
     private String description;
     private Customer customer;
+    private int bookingId;
 
-    public Review(int rating, String description, Customer customer) {
+    public Review(int rating, String description, Customer customer, int bookingId) {
         this.rating = rating;
         this.description = description;
         this.customer = customer;
+        this.bookingId = bookingId;
     }
 
     public int getRating() {
@@ -31,5 +33,13 @@ public class Review  {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 }

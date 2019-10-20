@@ -142,4 +142,13 @@ public class Hall {
         }
         return avgRating;
     }
+
+    public void setInitialReviews(Customer customer, int bookingId){
+        Review review = new Review(4, "One of the best", customer, bookingId);
+        reviews.add(review);
+        review = new Review(5, "Good service", customer, bookingId);
+        reviews.add(review);
+        review = new Review(3, "Excellent", customer, bookingId);
+        reviews.add(review);
+    }
 }
