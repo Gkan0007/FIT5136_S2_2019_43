@@ -20,7 +20,7 @@ public class UserInterface {
         System.out.println("(1) View halls and request a quotation");
         System.out.println("(2) Write a review");
         System.out.println("(3) Manage bookings");
-        System.out.println("(4) View quotations");
+        System.out.println("(4) View quotations and create a booking");
         System.out.println("(5) Logout");
     }
     public void displayMenu(Owner owner) { }

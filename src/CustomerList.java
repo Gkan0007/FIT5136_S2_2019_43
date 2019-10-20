@@ -42,12 +42,4 @@ public class CustomerList {
         return customer;
     }
 
-    public Customer getCustomerByUserName(String userName){
-        for(Customer customer: customerList){
-            if(customer.getUserName().equals(userName)){
-                return customer;
-            }
-        }
-        return null;
-    }
 }

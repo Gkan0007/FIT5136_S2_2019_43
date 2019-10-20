@@ -47,9 +47,9 @@ public class PES {
         listOfBookings.addBooking(listOfQuotations.getQuotationDetails(0), true);
         listOfBookings.addBooking(listOfQuotations.getQuotationDetails(1), true);
         listOfBookings.addBooking(listOfQuotations.getQuotationDetails(2), true);
-        listOfBookings.getBookingList().get(0).getHall().addReview(5, "Excellent", listOfCustomers.getCustomerByUserName("cust2"), 1);
-        listOfBookings.getBookingList().get(1).getHall().addReview(4, "One of the best", listOfCustomers.getCustomerByUserName("cust3"), 2);
-        listOfBookings.getBookingList().get(2).getHall().addReview(3, "Good service", listOfCustomers.getCustomerByUserName("cust4"), 3);
+        listOfBookings.getBookingList().get(0).getHall().addReview(5, "Excellent", listOfCustomers.getCustomer("cust2"), 1);
+        listOfBookings.getBookingList().get(1).getHall().addReview(4, "One of the best", listOfCustomers.getCustomer("cust3"), 2);
+        listOfBookings.getBookingList().get(2).getHall().addReview(3, "Good service", listOfCustomers.getCustomer("cust4"), 3);
 
         ArrayList<Boolean[]> availability = listOfHalls.getHallDetails(1).getAvailability();
         availability.get(4)[1] = false;
@@ -167,7 +167,7 @@ public class PES {
         System.out.println("Home");
         boolean flag = true;
         while(flag) {
-            userInterface.displayMenu(listOfCustomers.getCustomerByUserName(loggedInUser));
+            userInterface.displayMenu(listOfCustomers.getCustomer(loggedInUser));
             System.out.println("");
             userInterface.promptInputMessage("Please select an option from the menu");
             String choice = scanner.next();
@@ -325,8 +325,9 @@ public class PES {
             userInterface.promptInputMessage("Post this review to the hall? Y/N");
             input = scanner.next();
             if (input.equalsIgnoreCase("Y")) {
-                if (completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomerByUserName(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())) {
+                if (completedBookings.getBookingList().get(bookingIndex).getHall().addReview(rating, description, listOfCustomers.getCustomer(loggedInUser), completedBookings.getBookingList().get(bookingIndex).getBookingId())) {
                     userInterface.displayMessage("Review successful");
+                    flag = false;
                 } else {
                     userInterface.displayMessage("This booking has already been reviewed.");
                 }
@@ -366,6 +367,20 @@ public class PES {
                     userInterface.promptInputMessage("Would you like to continue with the booking?: Y/N");
                     input = scanner.next();
                     if (input.equalsIgnoreCase("Y")) {
+                        Date date = parseDate("07/09/2019");
+                        long dateDiff = (quotationsByUser.getQuotationDetails(quotationIndex).getQuoteDate().getTime() - date.getTime()) / 86400000;
+                        boolean booked = false;
+                        if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Evenning")){
+                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        }
+                        if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Evenning")){
+                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        }
+                        else{
+                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        }
+                        userInterface.displayMessage("A booking has already been made for this slot by another Customer. Sorry for the inconvienence");
+
                         userInterface.promptInputMessage("Would you like to proceed with the payment?: Y/N");
                         input = scanner.next();
                         if (input.equalsIgnoreCase("Y")) {
@@ -807,7 +822,7 @@ public class PES {
         if(input.equalsIgnoreCase("Y")) {
             //send the request
             userInterface.displayMessage("Your quotation request has been sent!");
-            listOfQuotations.createQuotation(listOfQuotations.getQuotationList().size() + 1, capacity, true, expectedPrice, quoteDate, timeslots[timeSlot -1], listOfHalls.getHallDetails(hallIndex).getDiscount(), cateringOptions, listOfHalls.getHallDetails(hallIndex), listOfCustomers.getCustomerByUserName(loggedInUser));
+            listOfQuotations.createQuotation(listOfQuotations.getQuotationList().size() + 1, capacity, true, expectedPrice, quoteDate, timeslots[timeSlot -1], listOfHalls.getHallDetails(hallIndex).getDiscount(), cateringOptions, listOfHalls.getHallDetails(hallIndex), listOfCustomers.getCustomer(loggedInUser));
             customerHome();
         }
         else{
