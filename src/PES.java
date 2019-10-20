@@ -307,7 +307,7 @@ public class PES {
                 }
             } else {
                 userInterface.displayError("Invalid input please try again");
-                writeAReview(completedBookings, bookingIndex);
+                continue;
             }
             userInterface.promptInputMessage("Enter the description for the review");
             scanner.nextLine();
@@ -330,6 +330,7 @@ public class PES {
                     flag = false;
                 } else {
                     userInterface.displayMessage("This booking has already been reviewed.");
+                    flag = false;
                 }
             } else if (input.equalsIgnoreCase("N")) {
                 userInterface.displayMessage("You chose no. Going to home menu");
@@ -359,7 +360,8 @@ public class PES {
             int quotationIndex= Integer.parseInt(input) - 1;
             if(quotationIndex >= 0 && quotationIndex < quotationsByUser.getQuotationList().size()) {
                 if (listOfBookings.isBookingExistsForQuote(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteId())) {
-                    userInterface.displayError("A booking has already been made for this quotation.");
+                    userInterface.displayError("A booking has already been made for this quotation. Going to home menu");
+                    System.out.println();
                     return;
                 }
                 else {
@@ -369,18 +371,21 @@ public class PES {
                     if (input.equalsIgnoreCase("Y")) {
                         Date date = parseDate("07/09/2019");
                         long dateDiff = (quotationsByUser.getQuotationDetails(quotationIndex).getQuoteDate().getTime() - date.getTime()) / 86400000;
-                        boolean booked = false;
-                        if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Evenning")){
-                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        boolean isSlotFree = false;
+                        if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Morning")){
+                            isSlotFree = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[0];
                         }
-                        if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Evenning")){
-                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        else if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Evening")) {
+                            isSlotFree = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int) dateDiff)[2];
                         }
-                        else{
-                            booked = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[2];
+                        else if(quotationsByUser.getQuotationDetails(quotationIndex).getQuoteTime().equals("Afternoon")){
+                            isSlotFree = quotationsByUser.getQuotationDetails(quotationIndex).getHall().getAvailability().get((int)dateDiff)[1];
                         }
-                        userInterface.displayMessage("A booking has already been made for this slot by another Customer. Sorry for the inconvienence");
 
+                        if(!isSlotFree) {
+                            userInterface.displayMessage("A booking has already been made for this slot by another Customer. Sorry for the inconvienence");
+                            return;
+                        }
                         userInterface.promptInputMessage("Would you like to proceed with the payment?: Y/N");
                         input = scanner.next();
                         if (input.equalsIgnoreCase("Y")) {
@@ -780,7 +785,7 @@ public class PES {
                 }
                 else {
                     userInterface.displayError("Invalid discount keyword. Please try again");
-                    userInterface.promptInputMessage("Would like to chec if you're eligible for consession or veteran discount? Y/N");
+                    userInterface.promptInputMessage("Would like to check if you're eligible for concession or veteran discount? Y/N");
                     input = scanner.next();
                     if(input.equalsIgnoreCase("Y")){
                         discount = "consession/veteran";
@@ -790,7 +795,7 @@ public class PES {
                     }
                     else
                     {
-                        userInterface.displayError("You are not eligible for Consession/Veteran discount");
+                        userInterface.displayError("You opted no for Consession/Veteran discount");
                     }
                 }
             }

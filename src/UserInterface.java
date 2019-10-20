@@ -153,7 +153,9 @@ public class UserInterface {
         System.out.println(message);
     }
     public boolean  displayExitScreen() {return true;}
-    public void displayError(String error) {}
+    public void displayError(String error) {
+        System.out.println(error);
+    }
 
 
 
