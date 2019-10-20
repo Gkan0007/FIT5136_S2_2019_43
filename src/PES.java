@@ -752,8 +752,9 @@ public class PES {
         System.out.println();
         userInterface.promptInputMessage("Would you like to apply for discount? Y/N");
         input = scanner.next();
+
         if(input.equalsIgnoreCase("Y")){
-            userInterface.promptInputMessage("Enter your discount keyword.");
+            userInterface.promptInputMessage("Enter your discount keyword." );
             flag = true;
             while (flag) {
                 discount = scanner.next();
@@ -761,8 +762,21 @@ public class PES {
                     userInterface.displayMessage("Discount code applied\nDisount: " + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%\n");
                     expectedPrice = expectedPrice * (100.0 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100;
                     flag = false;
-                } else {
+                }
+                else {
                     userInterface.displayError("Invalid discount keyword. Please try again");
+                    userInterface.promptInputMessage("Would like to chec if you're eligible for consession or veteran discount? Y/N");
+                    input = scanner.next();
+                    if(input.equalsIgnoreCase("Y")){
+                        discount = "consession/veteran";
+                        expectedPrice = expectedPrice * (100.0 - listOfHalls.getHallDetails(hallIndex).getDiscount()) / 100;
+                        userInterface.displayMessage("Discount code applied\nDisount: " + listOfHalls.getHallDetails(hallIndex).getDiscount() + "%\n");
+                        flag = false;
+                    }
+                    else
+                    {
+                        userInterface.displayError("You are not eligible for Consession/Veteran discount");
+                    }
                 }
             }
         }
