@@ -1,7 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import java.sql.SQLOutput;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +41,7 @@ public class PrimeEvents {
             listOfCustomers.addCustomer(new Customer(" ", " ", "User 2", true, true, true, 1));
             listOfHalls.createHall("Hall1", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
             listOfHalls.createHall("Hall2", listOfOwners.getOwner("user1"), "abcd", 100, 15, "address", 3000.0, 20);
-            listOfQuotations.createQuotation(1,100,true,2000.0,new Date(),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
+            listOfQuotations.createQuotation(1,100,true,2000.0, parseDate("09/09/2019"),"Evening",15.0,true,listOfHalls.getHallDetails(1),listOfCustomers.getCustomer(" "));
         }
         catch (Exception e)
         {
@@ -192,7 +188,6 @@ public class PrimeEvents {
                     case 2:
                         System.out.println("Please select a booking");
                         //[Bookings]
-                        listOfBookings.getAllBookings();
                         //System.out.println("(1) Name: 'Library'");
                         System.out.println();
 //                        int booking = scanner.nextInt();
@@ -209,17 +204,41 @@ public class PrimeEvents {
                     case 4:
                         System.out.println("Please select a booking");
                         //[Bookings]
-                        System.out.println("(1) Name: 'Library'");
+                        BookingList completedBookingsByUser = new BookingList();
+                        completedBookingsByUser.setBookingList(listOfBookings.getAllCompletedBookingsByUser(" "));
                         System.out.println();
-                        int booking2 = scanner.nextInt();
-                        switch (booking2) {
-                            case 1:
+                        input = scanner.next();
+                        if (isValidInteger(input)) {
+                            int bookingIndex = Integer.parseInt(input) - 1;
+                            System.out.println("Would you like to leave a review? Y/N");
+                            input = scanner.next();
+                            if(input.equalsIgnoreCase("Y"))
+                            {
                                 System.out.println("Please write your review about the booking");
-                                String bookReview = scanner.next();
-                                System.out.println("Your review has been post!");
-                                customerHome();
+                            }
+                            else if(input.equalsIgnoreCase("N")){
+                                System.out.println("You chose no. Going to home menu");
+                            }
+                            else {
+                                System.out.println("Invalid choice. Considering it as No.");
+
+                            }
+                            System.out.println("Your review has been post!");
+
                         }
-                        ;
+                        else
+                        {
+                            System.out.println("Invalid Input. Showing Customer Home menu");
+                        }
+//                        int booking2 = scanner.nextInt();
+//                        switch (booking2) {
+//                            case 1:
+//                                System.out.println("Please write your review about the booking");
+//                                String bookReview = scanner.next();
+//                                System.out.println("Your review has been post!");
+//                                customerHome();
+//                        }
+
 
                         break;
 
@@ -360,6 +379,7 @@ public class PrimeEvents {
                 }
             case 4:
                 //set
+
                 System.out.println("Please select a booking");
                 //[Bookings]
                 System.out.println("(1) Name: 'Library', Status: unpaid");

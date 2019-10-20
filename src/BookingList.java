@@ -1,5 +1,7 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class BookingList {
 
@@ -35,11 +37,21 @@ public class BookingList {
         return flag;
     }
 
-    public void getAllBookings(){
+    public ArrayList<Booking> getAllCompletedBookingsByUser(String userName){
+        int sno = 1;
+        Date today = new Date();
+        ArrayList<Booking> completedBookings = new ArrayList<>();
         for(Booking booking: bookingList){
-            System.out.println(booking.getBookingDate());
-            System.out.println(booking.getBookingTime());
-            System.out.println(booking.isPaymentStatus());
+            if(booking.getCustomer().getUserName().equals(userName)){
+                if (booking.isPaymentStatus() && booking.getBookingDate().before(today)){
+                    System.out.println("(" + sno++ + ")" +"\tHall name:\t\t\t" +booking.getHall().getName());
+                    System.out.println("\tBooking date:\t\t" +booking.getBookingDate());
+                    System.out.println("\tBooking time:\t\t" +booking.getBookingTime());
+                    completedBookings.add(booking);
+
+                }
+            }
         }
+        return completedBookings;
     }
 }
